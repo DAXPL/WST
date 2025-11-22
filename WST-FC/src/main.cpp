@@ -4,7 +4,10 @@
 #include "Configuration.h"
 
 DroneControlData droneControllData;
-CommunicationModule comms(&droneControllData, UDP_CONTROLL_PORT);
+DroneStatus connectionStatus {OK};
+DroneStatus batteryStatus {OK};
+DroneStatus droneStatus {OK};
+CommunicationModule comms(&droneControllData, UDP_CONTROLL_PORT, &connectionStatus);
 /*
 TUDU:
 Silniki krokowe 
@@ -19,5 +22,4 @@ void setup() {
 void loop() 
 {
   comms.Loop();
-  Serial.print("Throttle"+droneControllData.throttle);
 }

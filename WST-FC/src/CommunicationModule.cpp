@@ -1,13 +1,13 @@
 #include "CommunicationModule.h"
 #include "Configuration.h"
 /*
-Problemy:
--co jak za długo nie ma odpowiedzi? -> landingmachen()
--co jak utracimy połączenie z wifi? -> landingmachen()
+DNS-0.0.0.0
+packet loss
 */
-CommunicationModule::CommunicationModule(DroneControlData* dataPtr, unsigned int port) {
+CommunicationModule::CommunicationModule(DroneControlData* dataPtr, unsigned int port, DroneStatus* status) {
     sharedData = dataPtr;
     localPort = port;
+    droneStatus = status;
 }
 
 void CommunicationModule::Init() 
@@ -26,6 +26,9 @@ void CommunicationModule::Init()
 
 void CommunicationModule::Loop() 
 {
+    rssi = WiFi.RSSI();
+    connectionStatus = WiFi.status();
+
     int packetSize = udp.parsePacket();
 
     if (packetSize) 
@@ -38,5 +41,15 @@ void CommunicationModule::Loop()
             return;
         }
         memcpy(sharedData, packetBuffer, sizeof(DroneControlData));
+        lastUpdate = millis();
+    }
+
+    if(rssi < -80 || connectionStatus!= WL_CONNECTED || (millis()-lastUpdate)>MAX_ROGUE_TIME)
+    {
+        *droneStatus = WARNING;
+    }
+    else
+    {
+        *droneStatus = OK;
     }
 }
