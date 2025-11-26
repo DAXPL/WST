@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using WST.Control;
 
 public class OnScreenJoystick : MonoBehaviour, IDragHandler, IEndDragHandler {
-    [SerializeField] private MovementController movementController;
+    [SerializeField] private Controller controller;
     private Vector2 _startPosition;
 
     private void Start() {
@@ -14,7 +15,7 @@ public class OnScreenJoystick : MonoBehaviour, IDragHandler, IEndDragHandler {
         Vector2 clampedPosition = Vector2.ClampMagnitude(joystickOffset, 150);
         transform.position = _startPosition + clampedPosition;
         
-        movementController.GetVirtualMoveValues(clampedPosition.normalized);
+        controller.GetVirtualMoveValues(clampedPosition.normalized);
     }
 
     public void OnEndDrag(PointerEventData eventData) {
