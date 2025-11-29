@@ -3,12 +3,12 @@
 
 #include "DroneData.h"
 
-class IMixer {
+class IMixer
+{
 public:
     virtual ~IMixer() {}
-    
     virtual void Init() = 0;
-    virtual void Update(DroneControlData* input) = 0;
+    virtual void Update(DroneControlData *input) = 0;
     virtual void StopAll() = 0;
 };
 

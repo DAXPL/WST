@@ -5,15 +5,16 @@
 #include "IActuator.h"
 #include <Arduino.h>
 
-class BicopterMixer : public IMixer {
+class BicopterMixer : public IMixer
+{
 private:
-    IActuator* _motorLeft;
-    IActuator* _motorRight;
-    IActuator* _servoLeft;
-    IActuator* _servoRight;
+    IActuator *_motorLeft;
+    IActuator *_motorRight;
+    IActuator *_servoLeft;
+    IActuator *_servoRight;
 
 public:
-    BicopterMixer(IActuator* mL, IActuator* mR, IActuator* sL, IActuator* sR) 
+    BicopterMixer(IActuator *mL, IActuator *mR, IActuator *sL, IActuator *sR)
     {
         _motorLeft = mL;
         _motorRight = mR;
@@ -21,21 +22,21 @@ public:
         _servoRight = sR;
     }
 
-    void Init() override 
+    void Init() override
     {
-        _motorLeft->Init(); 
+        _motorLeft->Init();
         _motorRight->Init();
-        _servoLeft->Init(); 
+        _servoLeft->Init();
         _servoRight->Init();
     }
 
-    void Update(DroneControlData* input) override {}
+    void Update(DroneControlData *input) override {}
 
-    void StopAll() override 
+    void StopAll() override
     {
-        _motorLeft->Set(0); 
+        _motorLeft->Set(0);
         _motorRight->Set(0);
-        _servoLeft->Set(0); 
+        _servoLeft->Set(0);
         _servoRight->Set(0);
     }
 };

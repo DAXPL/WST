@@ -7,13 +7,15 @@
 #include "SensorsData.h"
 #include "ISensor.h"
 
-class SensorsModule {
+class SensorsModule
+{
 private:
-    SensorsData* sensorData;
-    std::vector<ISensor*> _sensors;
+    SensorsData *sensorData;
+    std::vector<ISensor *> _sensors;
+
 public:
-    SensorsModule(SensorsData* data); 
-    void AddSensor(ISensor* sensor);
+    SensorsModule(SensorsData *data);
+    void AddSensor(ISensor *sensor);
     void Init();
     void Loop();
 };

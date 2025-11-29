@@ -7,8 +7,10 @@
 #define WIFI_PASSWORD ""
 #define UDP_CONTROLL_PORT 4210
 #define MAX_ROGUE_TIME 1000
+#define MIN_RSSI -80
 
-enum DroneStatus{
+enum DroneStatus
+{
     WORKS,
     WARNING,
     BROKEN

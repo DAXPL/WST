@@ -4,7 +4,8 @@
 #include <Adafruit_MPU6050.h>
 #include <Wire.h>
 
-class MpuSensor : public ISensor {
+class MpuSensor : public ISensor
+{
 private:
     Adafruit_MPU6050 mpu;
     float pitch = 0;
@@ -14,7 +15,7 @@ private:
 
 public:
     void Init() override;
-    void Update(SensorsData* data) override;
+    void Update(SensorsData *data) override;
 };
 
 #endif
