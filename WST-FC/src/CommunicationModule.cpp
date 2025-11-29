@@ -50,6 +50,6 @@ void CommunicationModule::Loop()
     }
     else
     {
-        *droneStatus = OK;
+        *droneStatus = WORKS;
     }
 }
