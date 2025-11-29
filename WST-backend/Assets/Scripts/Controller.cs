@@ -4,17 +4,22 @@ using UnityEngine.InputSystem;
 namespace WST.Control {
     public class Controller : MonoBehaviour {
         [SerializeField] private float speed = 10;
-        [SerializeField] private Vector3 moveDirection;
+        [SerializeField] private float throttle;
+        [SerializeField] private float yaw;
 
-        // TODO: Change name of 'GetRealLifeMoveValues' method
-        public void GetRealLifeMoveValues(InputAction.CallbackContext ctx) {
-            if (ctx.performed) {
-                moveDirection = ctx.ReadValue<Vector2>();
-            }
-        }
+        // TODO: Change name of 'SetRealLifeMoveValues' method
+        // public void SetRealLifeMoveValues(InputAction.CallbackContext ctx) {
+        //     if (ctx.performed) {
+        //         moveDirection = ctx.ReadValue<Vector2>();
+        //     }
+        // }
 
-        public void GetVirtualMoveValues(Vector2 moveVector) {
-            moveDirection = moveVector;
+        public void SetVirtualThrottleValue(float throttleValue) {
+            throttle = throttleValue;
+        } 
+        
+        public void SetVirtualYawValue(float yawValue) {
+            yaw = yawValue;
         }
     }
 }
