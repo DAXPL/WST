@@ -41,7 +41,6 @@ void CommunicationModule::Loop()
         memcpy(sharedData, packetBuffer, sizeof(DroneControlData));
         lastUpdate = millis();
     }
-
     if (rssi < MIN_RSSI || connectionStatus != WL_CONNECTED || (millis() - lastUpdate) > MAX_ROGUE_TIME)
     {
         *droneStatus = WARNING;
