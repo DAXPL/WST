@@ -1,41 +1,39 @@
 #include "CommunicationModule.h"
 #include "Configuration.h"
-/*
-DNS-0.0.0.0
-packet loss
-*/
-CommunicationModule::CommunicationModule(DroneControlData* dataPtr, unsigned int port, DroneStatus* status) {
+
+CommunicationModule::CommunicationModule(DroneControlData *dataPtr, unsigned int port, DroneStatus *status)
+{
     sharedData = dataPtr;
     localPort = port;
     droneStatus = status;
 }
 
-void CommunicationModule::Init() 
+void CommunicationModule::Init()
 {
     Serial.print("Connecting to WiFi");
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-    while (WiFi.status() != WL_CONNECTED) 
+    while (WiFi.status() != WL_CONNECTED)
     {
         Serial.print(".");
         delay(500);
     }
-    Serial.println("\nConnected!\nIP Address: "+WiFi.localIP());
+    Serial.println("\nConnected!\nIP Address: " + WiFi.localIP());
     udp.begin(localPort);
 }
 
-void CommunicationModule::Loop() 
+void CommunicationModule::Loop()
 {
     rssi = WiFi.RSSI();
     connectionStatus = WiFi.status();
 
     int packetSize = udp.parsePacket();
 
-    if (packetSize) 
+    if (packetSize)
     {
         int len = udp.read(packetBuffer, 255);
 
-        if (len != sizeof(DroneControlData)) 
+        if (len != sizeof(DroneControlData))
         {
             Serial.printf("Error: invalid packet");
             return;
@@ -44,12 +42,12 @@ void CommunicationModule::Loop()
         lastUpdate = millis();
     }
 
-    if(rssi < -80 || connectionStatus!= WL_CONNECTED || (millis()-lastUpdate)>MAX_ROGUE_TIME)
+    if (rssi < MIN_RSSI || connectionStatus != WL_CONNECTED || (millis() - lastUpdate) > MAX_ROGUE_TIME)
     {
         *droneStatus = WARNING;
     }
     else
     {
-        *droneStatus = OK;
+        *droneStatus = WORKS;
     }
 }
