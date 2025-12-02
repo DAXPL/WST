@@ -23,7 +23,7 @@ SensorsModule sensorsModule(&sensorsData);
 void setup()
 {
   Serial.begin(115200);
-
+  
   #ifdef VEHICLE_TYPE_BICOPTER
     Serial.println("Configuring as BICOPTER");
     sensorsModule.AddSensor(&mpuSensor);
