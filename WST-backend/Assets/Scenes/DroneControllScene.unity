@@ -161,8 +161,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftStickInput: {fileID: -4897823517846803955, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   rightStickInput: {fileID: 8821104933467640493, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
-  ipAddress: 192.168.0.39
+  ipAddress: 192.168.0.49
   port: 4210
+  multiplier: 1000
   _leftStickVal: {x: 0, y: 0}
   _rightStickVal: {x: 0, y: 0}
 --- !u!4 &622062068

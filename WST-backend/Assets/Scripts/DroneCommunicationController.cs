@@ -20,6 +20,8 @@ namespace WST.Communication
         private UdpClient udpClient;
         private IPEndPoint remoteEndPoint;
 
+        public float multiplier = 1000.0f;
+
         [SerializeField] private Vector2 _leftStickVal;
         [SerializeField] private Vector2 _rightStickVal;
 
@@ -56,10 +58,10 @@ namespace WST.Communication
             while (true)
             {
                 DroneControlData data = new DroneControlData();
-                data.throttle = (short)(_leftStickVal.y);
-                data.yaw = (short)(_leftStickVal.x);
-                data.pitch = (short)(_rightStickVal.y);
-                data.roll = (short)(_rightStickVal.x);
+                data.throttle = (short)(_leftStickVal.y * multiplier);
+                data.yaw = (short)(_leftStickVal.x * multiplier);
+                data.pitch = (short)(_rightStickVal.y * multiplier);
+                data.roll = (short)(_rightStickVal.x * multiplier);
 
 
                 int size = Marshal.SizeOf(data);
