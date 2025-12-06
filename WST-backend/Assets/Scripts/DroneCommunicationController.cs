@@ -25,13 +25,8 @@ namespace WST.Communication
 
         void Start()
         {
-            //udpClient = new UdpClient();
-            //remoteEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-
             leftStickInput.action.Enable();
-            rightStickInput.action.Enable();
-
-            //StartCoroutine(ConnectionLoop());
+            rightStickInput.action.Enable();         
         }
 
         private void OnDestroy()
@@ -46,6 +41,14 @@ namespace WST.Communication
         {
             _leftStickVal = leftStickInput.action.ReadValue<Vector2>();
             _rightStickVal = rightStickInput.action.ReadValue<Vector2>();
+        }
+
+        [ContextMenu("Connect")]
+        public void Connect()
+        {
+            udpClient = new UdpClient();
+            remoteEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+            StartCoroutine(ConnectionLoop());
         }
 
         private IEnumerator ConnectionLoop()
