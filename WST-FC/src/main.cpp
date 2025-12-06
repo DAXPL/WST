@@ -17,7 +17,7 @@ DroneStatus connectionStatus{WORKS};
 DroneStatus batteryStatus{WORKS};
 DroneStatus droneStatus{WORKS};
 
-CommunicationModule comms(&droneControllData, UDP_CONTROLL_PORT, &connectionStatus);
+CommunicationModule comms(&droneControllData, &connectionStatus);
 SensorsModule sensorsModule(&sensorsData);
 
 void setup()
