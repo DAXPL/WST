@@ -1,0 +1,51 @@
+#include "communicationModules\CommunicationWiFiUDPModule.h"
+#include "Configuration.h"
+
+CommunicationWiFiUDPModule::CommunicationWiFiUDPModule(DroneControlData *dataPtr, unsigned int port, DroneStatus *status)
+{
+    sharedData = dataPtr;
+    localPort = port;
+    droneStatus = status;
+}
+
+void CommunicationWiFiUDPModule::Init()
+{
+    Serial.print("Connecting to WiFi");
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+    while (WiFi.status() != WL_CONNECTED)
+    {
+        Serial.print(".");
+        delay(500);
+    }
+    Serial.println("\nConnected!\nIP Address: " + WiFi.localIP());
+    udp.begin(localPort);
+}
+void CommunicationWiFiUDPModule::Loop()
+{
+    rssi = WiFi.RSSI();
+    connectionStatus = WiFi.status();
+
+    int packetSize = udp.parsePacket();
+
+    if (packetSize)
+    {
+        int len = udp.read(packetBuffer, 255);
+
+        if (len != sizeof(DroneControlData))
+        {
+            Serial.printf("Error: invalid packet");
+            return;
+        }
+        memcpy(sharedData, packetBuffer, sizeof(DroneControlData));
+        lastUpdate = millis();
+    }
+    if (rssi < MIN_RSSI || connectionStatus != WL_CONNECTED || (millis() - lastUpdate) > MAX_ROGUE_TIME)
+    {
+        *droneStatus = WARNING;
+    }
+    else
+    {
+        *droneStatus = WORKS;
+    }
+}
