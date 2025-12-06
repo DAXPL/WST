@@ -4,7 +4,7 @@
 #include "IMixer.h"
 #include "IActuator.h"
 #include <Arduino.h>
-
+#include "DCMotor.h"
 class BoatMixer : public IMixer
 {
 private:
@@ -12,16 +12,16 @@ private:
     IActuator *_motorRight;
 
 public:
-    BoatMixer(IActuator *left, IActuator *right)
+    BoatMixer()
     {
-        _motorLeft = left;
-        _motorRight = right;
+        _motorRight = new DCMotor(18, 19, 5, 1);
+        _motorLeft = new DCMotor(16, 17, 4, 0);
     }
 
     void Init() override
     {
-        _motorLeft->Init();
-        _motorRight->Init();
+        if(_motorLeft)_motorLeft->Init();
+        if(_motorRight)_motorRight->Init();
     }
 
     void Update(DroneControlData *input) override
@@ -33,11 +33,17 @@ public:
         int16_t leftSpeed = throttle + yaw;
         int16_t rightSpeed = throttle - yaw;
 
-        _motorLeft->Set(constrain(leftSpeed, -1000, 1000));
-        _motorRight->Set(constrain(rightSpeed, -1000, 1000));
+        if(_motorRight)
+        {
+            _motorRight->Set(constrain(rightSpeed, -1000, 1000));
+            _motorRight->Loop();
+        }
 
-        _motorLeft->Loop();
-        _motorRight->Loop();
+        if(_motorLeft)
+        {
+            _motorLeft->Set(constrain(leftSpeed, -1000, 1000));
+            _motorLeft->Loop();
+        }
     }
 
     void StopAll() override
