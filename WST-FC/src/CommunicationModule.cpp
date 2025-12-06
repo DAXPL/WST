@@ -9,11 +9,18 @@ CommunicationModule::CommunicationModule(DroneControlData *dataPtr, DroneStatus 
 
 void CommunicationModule::Init()
 {
-    wifimodule = new CommunicationWiFiUDPModule(sharedData, UDP_CONTROLL_PORT, droneStatus);
-    wifimodule -> Init();
+    if(COMMUNICATION_METHOD == 0){
+        wifimodule = new CommunicationWiFiUDPModule(sharedData, UDP_CONTROLL_PORT, droneStatus);
+        wifimodule -> Init();
+    }
+    if(COMMUNICATION_METHOD == 1){
+        //blablabla
+    }
 }
 
 void CommunicationModule::Loop()
 {
-    wifimodule -> Loop();
+    if(wifimodule!=nullptr){
+        wifimodule -> Loop();
+    }
 }
