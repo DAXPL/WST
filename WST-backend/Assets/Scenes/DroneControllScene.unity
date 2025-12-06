@@ -130,6 +130,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34fb0aaf648fc1b47919d32c6e886556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &622062066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 622062068}
+  - component: {fileID: 622062067}
+  m_Layer: 0
+  m_Name: ConnectionController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &622062067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622062066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77594c5c6b1d59c48bdef94052453f85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftStickInput: {fileID: -4897823517846803955, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+  rightStickInput: {fileID: 8821104933467640493, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+  ipAddress: 192.168.0.39
+  port: 4210
+  _leftStickVal: {x: 0, y: 0}
+  _rightStickVal: {x: 0, y: 0}
+--- !u!4 &622062068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622062066}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 941, y: 487.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &723522161 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4587317231470714417, guid: 6a82a6a27f2a70540a4e7010a64245bd, type: 3}
@@ -1212,3 +1262,4 @@ SceneRoots:
   - {fileID: 1082626412}
   - {fileID: 1740458439}
   - {fileID: 818393744}
+  - {fileID: 622062068}
