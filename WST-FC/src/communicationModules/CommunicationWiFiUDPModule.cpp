@@ -19,6 +19,7 @@ void CommunicationWiFiUDPModule::Init()
         delay(500);
     }
     Serial.println("\nConnected!\nIP Address: " + WiFi.localIP());
+    Serial.println("MAC Address:\n" + WiFi.macAddress());
     udp.begin(localPort);
 }
 void CommunicationWiFiUDPModule::Loop()
