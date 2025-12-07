@@ -4,7 +4,9 @@
 #include "IMixer.h"
 #include "IActuator.h"
 #include <Arduino.h>
+#include "DCMotor.h"
 
+#define MAX_DC_SPEED 1000
 class BoatMixer : public IMixer
 {
 private:
@@ -12,16 +14,13 @@ private:
     IActuator *_motorRight;
 
 public:
-    BoatMixer(IActuator *left, IActuator *right)
-    {
-        _motorLeft = left;
-        _motorRight = right;
-    }
+    BoatMixer(IActuator* left, IActuator* right) 
+        : _motorLeft(left), _motorRight(right) {}
 
     void Init() override
     {
-        _motorLeft->Init();
-        _motorRight->Init();
+        if(_motorLeft)_motorLeft->Init();
+        if(_motorRight)_motorRight->Init();
     }
 
     void Update(DroneControlData *input) override
@@ -30,14 +29,20 @@ public:
         int16_t throttle = input->throttle;
         int16_t yaw = input->yaw;
 
-        int16_t leftSpeed = throttle + yaw;
-        int16_t rightSpeed = throttle - yaw;
+        int16_t leftSpeed = constrain(throttle + yaw, -MAX_DC_SPEED, MAX_DC_SPEED);
+        int16_t rightSpeed = constrain(throttle - yaw, -MAX_DC_SPEED, MAX_DC_SPEED);
 
-        _motorLeft->Set(constrain(leftSpeed, -1000, 1000));
-        _motorRight->Set(constrain(rightSpeed, -1000, 1000));
+        if(_motorRight)
+        {
+            _motorRight->Set(rightSpeed);
+            _motorRight->Loop();
+        }
 
-        _motorLeft->Loop();
-        _motorRight->Loop();
+        if(_motorLeft)
+        {
+            _motorLeft->Set(leftSpeed);
+            _motorLeft->Loop();
+        }
     }
 
     void StopAll() override

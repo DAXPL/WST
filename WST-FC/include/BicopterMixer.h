@@ -4,7 +4,7 @@
 #include "IMixer.h"
 #include "IActuator.h"
 #include <Arduino.h>
-
+#include "DCMotor.h"
 class BicopterMixer : public IMixer
 {
 private:
@@ -14,30 +14,30 @@ private:
     IActuator *_servoRight;
 
 public:
-    BicopterMixer(IActuator *mL, IActuator *mR, IActuator *sL, IActuator *sR)
+    BicopterMixer()
     {
-        _motorLeft = mL;
-        _motorRight = mR;
-        _servoLeft = sL;
-        _servoRight = sR;
+        _motorLeft = new DCMotor(16, 17, 4, 0);
+        _motorRight = new DCMotor(18, 19, 5, 1);
+        //_servoLeft = ;
+        //_servoRight = ;
     }
 
     void Init() override
     {
-        _motorLeft->Init();
-        _motorRight->Init();
-        _servoLeft->Init();
-        _servoRight->Init();
+        if(_motorLeft)_motorLeft->Init();
+        if(_motorRight)_motorRight->Init();
+        if(_servoLeft)_servoLeft->Init();
+        if(_servoRight)_servoRight->Init();
     }
 
     void Update(DroneControlData *input) override {}
 
     void StopAll() override
     {
-        _motorLeft->Set(0);
-        _motorRight->Set(0);
-        _servoLeft->Set(0);
-        _servoRight->Set(0);
+        if(_motorLeft)_motorLeft->Set(0);
+        if(_motorRight)_motorRight->Set(0);
+        if(_servoLeft)_servoLeft->Set(0);
+        if(_servoRight)_servoRight->Set(0);
     }
 };
 
