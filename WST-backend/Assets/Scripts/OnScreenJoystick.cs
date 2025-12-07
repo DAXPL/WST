@@ -29,12 +29,12 @@ namespace WST.Control {
 
             switch (axis) {
                 case JoystickAxis.Horizontal:
-                    _virtualController.GetController.SetVirtualThrottleValue(clampedPosition.normalized.x);
+                    _virtualController.GetController.SetVirtualYawValue(clampedPosition.normalized.x);
                     joystickPosition.y = _startPosition.y;
                 break;
 
                 case JoystickAxis.Vertical:
-                    _virtualController.GetController.SetVirtualYawValue(clampedPosition.normalized.y);
+                    _virtualController.GetController.SetVirtualThrottleValue(clampedPosition.normalized.y);
                     joystickPosition.x = _startPosition.x;
                 break;
             }
@@ -50,11 +50,11 @@ namespace WST.Control {
 
             switch (axis) {
                 case JoystickAxis.Horizontal:
-                    _virtualController.GetController.SetVirtualThrottleValue(0);
+                    _virtualController.GetController.SetVirtualYawValue(0);
                 break;
 
                 case JoystickAxis.Vertical:
-                    _virtualController.GetController.SetVirtualYawValue(0);
+                    _virtualController.GetController.SetVirtualThrottleValue(0);
                 break;
             }
         }
