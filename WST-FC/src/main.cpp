@@ -13,6 +13,8 @@
 
 #ifdef VEHICLE_TYPE_AIRBOAT
     #include "AirBoatMixer.h"
+    DCMotor motorL(16, 17, 4, 0); 
+    DCMotor motorR(18, 19, 5, 1);
 #endif
 
 DroneControlData droneControllData{};
@@ -38,7 +40,7 @@ void setup()
   #endif
   #ifdef VEHICLE_TYPE_AIRBOAT
     Serial.println("Configuring as AIRBOAT");
-    droneMixer = new BoatMixer();
+    droneMixer = new BoatMixer(&motorL, &motorR);
   #endif
 
   comms.Init();

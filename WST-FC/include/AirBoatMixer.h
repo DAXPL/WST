@@ -5,6 +5,8 @@
 #include "IActuator.h"
 #include <Arduino.h>
 #include "DCMotor.h"
+
+#define MAX_DC_SPEED 1000
 class BoatMixer : public IMixer
 {
 private:
@@ -12,11 +14,8 @@ private:
     IActuator *_motorRight;
 
 public:
-    BoatMixer()
-    {
-        _motorRight = new DCMotor(18, 19, 5, 1);
-        _motorLeft = new DCMotor(16, 17, 4, 0);
-    }
+    BoatMixer(IActuator* left, IActuator* right) 
+        : _motorLeft(left), _motorRight(right) {}
 
     void Init() override
     {
@@ -30,18 +29,18 @@ public:
         int16_t throttle = input->throttle;
         int16_t yaw = input->yaw;
 
-        int16_t leftSpeed = throttle + yaw;
-        int16_t rightSpeed = throttle - yaw;
+        int16_t leftSpeed = constrain(throttle + yaw, -MAX_DC_SPEED, MAX_DC_SPEED);
+        int16_t rightSpeed = constrain(throttle - yaw, -MAX_DC_SPEED, MAX_DC_SPEED);
 
         if(_motorRight)
         {
-            _motorRight->Set(constrain(rightSpeed, -1000, 1000));
+            _motorRight->Set(rightSpeed);
             _motorRight->Loop();
         }
 
         if(_motorLeft)
         {
-            _motorLeft->Set(constrain(leftSpeed, -1000, 1000));
+            _motorLeft->Set(leftSpeed);
             _motorLeft->Loop();
         }
     }
