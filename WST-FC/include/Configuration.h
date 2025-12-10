@@ -1,7 +1,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#define VEHICLE_TYPE_AIRBOAT
+#define VEHICLE_TYPE_BICOPTER
 
 #define WIFI_SSID "Willson"
 #define WIFI_PASSWORD "Autyzm2137"
