@@ -6,6 +6,8 @@
 #include <Arduino.h>
 #include "DCMotor.h"
 #include "ISensor.h"
+#include "ServoMotor.h"
+
 class BicopterMixer : public IMixer
 {
 private:
@@ -19,7 +21,7 @@ public:
     {
         _motorLeft = new DCMotor(16, 17, 4, 0);
         _motorRight = new DCMotor(18, 19, 5, 1);
-        //_servoLeft = ;
+        //_servoLeft = new ServoMotor;
         //_servoRight = ;
     }
 
