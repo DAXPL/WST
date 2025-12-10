@@ -5,6 +5,7 @@
 #include "IActuator.h"
 #include <Arduino.h>
 #include "DCMotor.h"
+#include "ISensor.h"
 class BicopterMixer : public IMixer
 {
 private:
@@ -30,7 +31,7 @@ public:
         if(_servoRight)_servoRight->Init();
     }
 
-    void Update(DroneControlData *input) override {}
+    void Update(DroneControlData *input, SensorsData *sensors) override {}
 
     void StopAll() override
     {

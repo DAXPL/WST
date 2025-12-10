@@ -52,5 +52,5 @@ void loop()
 {
   comms.Loop();
   sensorsModule.Loop();
-  if(droneMixer != nullptr) droneMixer->Update(&droneControllData);
+  if(droneMixer != nullptr) droneMixer->Update(&droneControllData, &sensorsData);
 }
