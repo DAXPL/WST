@@ -21,26 +21,43 @@ public:
     {
         _motorLeft = new DCMotor(16, 17, 4, 0);
         _motorRight = new DCMotor(18, 19, 5, 1);
-        //_servoLeft = new ServoMotor;
-        //_servoRight = ;
+
+        _servoLeft = new ServoMotor(16); 
+        _servoRight = new ServoMotor(17);
     }
 
     void Init() override
     {
-        if(_motorLeft)_motorLeft->Init();
-        if(_motorRight)_motorRight->Init();
-        if(_servoLeft)_servoLeft->Init();
-        if(_servoRight)_servoRight->Init();
+        if(_motorLeft) _motorLeft->Init();
+        if(_motorRight) _motorRight->Init();
+        if(_servoLeft) _servoLeft->Init();
+        if(_servoRight) _servoRight->Init();
     }
 
-    void Update(DroneControlData *input, SensorsData *sensors) override {}
+    void Update(DroneControlData *input, SensorsData *sensors) override 
+    {
+        if(sensors == nullptr) return;
+        int16_t currentPitch = (sensors->pitch);
+        //Serial.printf("Pitch Sensor: %.2f deg\n", 
+        //              currentPitch / 100.0f);
+
+        if(_servoLeft)
+        {
+            _servoLeft->Set(-currentPitch);
+        }
+        
+        if(_servoRight)
+        {
+           // _servoRight->Set(-currentPitch); 
+        }
+    }
 
     void StopAll() override
     {
-        if(_motorLeft)_motorLeft->Set(0);
-        if(_motorRight)_motorRight->Set(0);
-        if(_servoLeft)_servoLeft->Set(0);
-        if(_servoRight)_servoRight->Set(0);
+        if(_motorLeft) _motorLeft->Set(0);
+        if(_motorRight) _motorRight->Set(0);
+        if(_servoLeft) _servoLeft->Set(0);
+        if(_servoRight) _servoRight->Set(0);
     }
 };
 
