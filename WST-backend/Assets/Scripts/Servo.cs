@@ -11,7 +11,10 @@ public class Servo : MonoBehaviour {
     public void StartRotateBlades() {
         if (_rotateBladesCoroutine != null)
             return;
-        
+
+        if (blades == null) 
+            throw new MissingComponentException("Blades transform is missing");
+
         _rotateBladesCoroutine = StartCoroutine(RotateBlades());
     } 
     
@@ -26,8 +29,9 @@ public class Servo : MonoBehaviour {
 
     private IEnumerator RotateBlades() {
         float step = 0;
+        
         while (true) {
-            step += bladesRotationSpeed * Time.deltaTime;
+            step = (step + bladesRotationSpeed * Time.deltaTime) % 360f;
             Quaternion baseRotation = Quaternion.Euler(90f * angle, 0f, 0f);
             Quaternion spinRotation = Quaternion.AngleAxis(step, Vector3.up);
             
