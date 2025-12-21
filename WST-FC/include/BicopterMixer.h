@@ -19,17 +19,17 @@ private:
 public:
     BicopterMixer()
     {
-        _motorLeft = new DCMotor(16, 17, 4, 0);
-        _motorRight = new DCMotor(18, 19, 5, 1);
+        //_motorLeft = new DCMotor(16, 17, 4, 0);
+        //_motorRight = new DCMotor(18, 19, 5, 1);
 
-        _servoLeft = new ServoMotor(16); 
-        _servoRight = new ServoMotor(17);
+        _servoLeft = new ServoMotor(16,0,180); 
+        _servoRight = new ServoMotor(17,0,180);
     }
 
     void Init() override
     {
-        if(_motorLeft) _motorLeft->Init();
-        if(_motorRight) _motorRight->Init();
+        //if(_motorLeft) _motorLeft->Init();
+        //if(_motorRight) _motorRight->Init();
         if(_servoLeft) _servoLeft->Init();
         if(_servoRight) _servoRight->Init();
     }
@@ -38,17 +38,13 @@ public:
     {
         if(sensors == nullptr) return;
         int16_t currentPitch = (sensors->pitch);
-        //Serial.printf("Pitch Sensor: %.2f deg\n", 
-        //              currentPitch / 100.0f);
-
         if(_servoLeft)
         {
             _servoLeft->Set(-currentPitch);
         }
-        
         if(_servoRight)
         {
-           // _servoRight->Set(-currentPitch); 
+            _servoRight->Set(currentPitch);
         }
     }
 

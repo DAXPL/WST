@@ -30,8 +30,8 @@ public:
         int16_t throttle = input->throttle;
         int16_t yaw = input->yaw;
 
-        int16_t leftSpeed = constrain(throttle + yaw, -MAX_DC_SPEED, MAX_DC_SPEED);
-        int16_t rightSpeed = constrain(throttle - yaw, -MAX_DC_SPEED, MAX_DC_SPEED);
+        int16_t leftSpeed = constrain(throttle + yaw, 0, MAX_DC_SPEED);
+        int16_t rightSpeed = constrain(throttle - yaw, 0, MAX_DC_SPEED);
 
         if(_motorRight)
         {
