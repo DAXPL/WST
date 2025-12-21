@@ -6,7 +6,8 @@ public class Servo : MonoBehaviour {
     [Range(-1f,1f), SerializeField] private float angle;
     [SerializeField] private float bladesRotationSpeed = 100;
     private Coroutine _rotateBladesCoroutine;
-
+    private Coroutine _decreaseBladesRotationSpeedCoroutine;
+    
     [ContextMenu("Start Rotate Blades")]
     public void StartRotateBlades() {
         if (_rotateBladesCoroutine != null)
@@ -16,6 +17,11 @@ public class Servo : MonoBehaviour {
             throw new MissingComponentException("Blades transform is missing");
 
         _rotateBladesCoroutine = StartCoroutine(RotateBlades());
+        
+        if (_decreaseBladesRotationSpeedCoroutine == null)
+            return;
+        
+        StopCoroutine(_decreaseBladesRotationSpeedCoroutine);
     } 
     
     [ContextMenu("Stop Rotate Blades")]
@@ -25,6 +31,33 @@ public class Servo : MonoBehaviour {
         
         StopCoroutine(_rotateBladesCoroutine);
         _rotateBladesCoroutine = null;
+        
+        if (_decreaseBladesRotationSpeedCoroutine == null)
+            return;
+        
+        StopCoroutine(_decreaseBladesRotationSpeedCoroutine);
+    }
+    
+    [ContextMenu("Slowly Stop Rotate Blades")]
+    public void StopSlowlyRotateBlades() {
+        if (_decreaseBladesRotationSpeedCoroutine != null)
+            return;
+        
+        _decreaseBladesRotationSpeedCoroutine = StartCoroutine(DecreaseBladesRotationSpeed());
+    }
+
+    private IEnumerator DecreaseBladesRotationSpeed() {
+        float defaultSpeed = bladesRotationSpeed;
+        float step = defaultSpeed/3;
+        
+        while (bladesRotationSpeed > 0) {
+            bladesRotationSpeed -= step * Time.deltaTime;
+            yield return null;
+        }
+
+        StopRotateBlades();
+        bladesRotationSpeed = defaultSpeed;
+        _decreaseBladesRotationSpeedCoroutine = null;
     }
 
     private IEnumerator RotateBlades() {
