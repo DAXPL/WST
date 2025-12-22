@@ -40,6 +40,8 @@ public:
 
     void Init() override
     {
+        //if(_motorLeft) _motorLeft->Init();
+        //if(_motorRight) _motorRight->Init();
         if(_servoLeft) _servoLeft->Init();
         if(_servoRight) _servoRight->Init();
         
