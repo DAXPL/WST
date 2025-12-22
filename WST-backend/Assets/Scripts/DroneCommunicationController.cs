@@ -52,7 +52,7 @@ namespace WST.Communication
             {
                 if (controller)
                 {
-                    DroneControlData data = controller.GetControlls();
+                    DroneControlData data = controller.GetControls();
 
                     int size = Marshal.SizeOf(data);
                     byte[] bytes = new byte[size];
@@ -74,7 +74,7 @@ namespace WST.Communication
             }
         }
 
-        void OnApplicationQuit()
+        private void OnApplicationQuit()
         {
             if (udpClient != null) udpClient.Close();
         }
