@@ -15,13 +15,13 @@ namespace WST.Communication
         private int port = 4210;
         [SerializeField] private float sendInterval = 0.1f;
 
-        private UdpClient udpClient;
-        private IPEndPoint remoteEndPoint;
+        private UdpClient _udpClient;
+        private IPEndPoint _remoteEndPoint;
 
         private void OnDestroy()
         {
             StopAllCoroutines();
-            if (udpClient != null) udpClient.Close();
+            if (_udpClient != null) _udpClient.Close();
         }
 
         public void UpdateIP(string s)
@@ -40,9 +40,9 @@ namespace WST.Communication
         [ContextMenu("Connect")]
         public void Connect()
         {
-            if (udpClient != null) udpClient.Close();
-            udpClient = new UdpClient();
-            remoteEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+            if (_udpClient != null) _udpClient.Close();
+            _udpClient = new UdpClient();
+            _remoteEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
             StartCoroutine(ConnectionLoop());
         }
 
@@ -68,7 +68,7 @@ namespace WST.Communication
                         Marshal.FreeHGlobal(ptr);
                     }
 
-                    udpClient.Send(bytes, bytes.Length, remoteEndPoint);
+                    _udpClient.Send(bytes, bytes.Length, _remoteEndPoint);
                 }
                 yield return new WaitForSeconds(sendInterval);
             }
@@ -76,7 +76,7 @@ namespace WST.Communication
 
         private void OnApplicationQuit()
         {
-            if (udpClient != null) udpClient.Close();
+            if (_udpClient != null) _udpClient.Close();
         }
     }
 }
