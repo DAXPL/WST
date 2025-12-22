@@ -34,13 +34,10 @@ public:
 
     void Set(int16_t speed) override
     {
-        speed = constrain(speed, -2000, 2000);
-        int angle = map(speed, -2000, 2000, _minAngle, _maxAngle);
-        
+        speed = constrain(speed, -9000, 9000);
+        int angle = map(speed, -9000, 9000, _minAngle, _maxAngle);
+        Serial.printf("Servo: %d deg\n",angle);
         _servo.write(angle);
-        
-        // Debug
-         Serial.printf("Pin: %d | In:%d -> Angle: %d\n", _pin, speed, angle);
     }
 
     void Loop() override {}
