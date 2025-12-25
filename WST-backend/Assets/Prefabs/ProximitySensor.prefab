@@ -100,3 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitDistance: 10
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 64
