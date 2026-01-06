@@ -7,9 +7,9 @@ CommunicationESPNowModule::CommunicationESPNowModule(DroneControlData *dataPtr, 
 }
 uint8_t broadcastAddress[] = {0xEC,0x64,0xC9,0xC4,0xA2,0x1A}; //tu będzie do uzupełnienia MAC odbiorcy
 
-void CommunicationESPNowModule::setup(){
-    Serial.begin(115200);
-    WiFi.mode(WIFI_STA);
+void CommunicationESPNowModule::Init()
+{
+WiFi.mode(WIFI_STA);
 
     if(esp_now_init() != ESP_OK){
         Serial.println("Error initializing ESP-NOW");
@@ -25,14 +25,9 @@ void CommunicationESPNowModule::setup(){
         Serial.println("Failed to add peer");
         return;
     }
-}
-
-void CommunicationESPNowModule::Init(){
-
+    
     Serial.print("MAC address: ");
     Serial.println(WiFi.macAddress());
-    
-
 }
 void CommunicationESPNowModule::Loop(){
     // ControlPacket_t packet;

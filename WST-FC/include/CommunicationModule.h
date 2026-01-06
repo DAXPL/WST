@@ -5,13 +5,15 @@
 #include <WiFiUdp.h>
 #include "DroneData.h"
 #include "Configuration.h"
+#include "communicationModules\ICommunicationInterface.h"
 #include "communicationModules\CommunicationWiFiUDPModule.h"
+#include "communicationModules\CommunicationESPNowModule.h"
 
 class CommunicationModule
 {
 private:
     DroneControlData *sharedData;
-    CommunicationWiFiUDPModule *wifimodule;
+    ICommunicationInterface *communicationInterface;
     wl_status_t connectionStatus{WL_IDLE_STATUS};
     DroneStatus *droneStatus;
 

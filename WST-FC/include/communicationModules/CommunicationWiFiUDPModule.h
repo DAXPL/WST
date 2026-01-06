@@ -4,8 +4,9 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include "DroneData.h"
+#include "ICommunicationInterface.h"
 #include "Configuration.h"
-class CommunicationWiFiUDPModule{
+class CommunicationWiFiUDPModule : public ICommunicationInterface{
     private:
     DroneControlData *sharedData;
     WiFiUDP udp;

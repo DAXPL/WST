@@ -4,10 +4,11 @@
 #include <WiFi.h>
 #include "DroneData.h"
 #include "Configuration.h"
+#include "ICommunicationInterface.h"
 #include <esp_now.h>
 
 
-class CommunicationESPNowModule{
+class CommunicationESPNowModule : public ICommunicationInterface{
     private:
     DroneControlData *sharedData;
     unsigned long lastUpdate{0};
@@ -15,8 +16,7 @@ class CommunicationESPNowModule{
 
     public:
     CommunicationESPNowModule(DroneControlData *dataPtr, DroneStatus *status);
-
-    void setup();
+    
     void Init();
     void Loop();
 };
