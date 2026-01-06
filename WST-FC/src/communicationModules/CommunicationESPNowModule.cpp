@@ -35,5 +35,10 @@ void CommunicationESPNowModule::Init(){
 
 }
 void CommunicationESPNowModule::Loop(){
+    // ControlPacket_t packet;
 
+    // //tutaj będzie wysyłanie pakietów
+
+    // esp_now_send(peer_addr,(uint8_t*)&packet,sizeof(packet) //Miłosz help me
+    // );
 }
