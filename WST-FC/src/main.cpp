@@ -43,14 +43,14 @@ void setup()
     droneMixer = new BoatMixer(&motorL, &motorR);
   #endif
 
-  comms.Init();
+  //comms.Init();
   sensorsModule.Init();
   if(droneMixer != nullptr) droneMixer->Init();
 }
 
 void loop()
 {
-  comms.Loop();
+  //comms.Loop();
   sensorsModule.Loop();
   if(droneMixer != nullptr) droneMixer->Update(&droneControllData, &sensorsData);
 }
