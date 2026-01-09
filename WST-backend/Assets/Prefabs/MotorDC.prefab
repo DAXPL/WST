@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 5664774805897636979}
   - component: {fileID: 7467449069411880607}
   - component: {fileID: 7832319483830827779}
+  - component: {fileID: 7049009121450576194}
+  - component: {fileID: 2941469335996929338}
   - component: {fileID: 6051212962561388534}
   m_Layer: 0
   m_Name: MotorDC
@@ -109,6 +111,49 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &7049009121450576194
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8531805785847221842}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!138 &2941469335996929338
+FixedJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8531805785847221842}
+  serializedVersion: 1
+  m_ConnectedBody: {fileID: 0}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!114 &6051212962561388534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +166,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb53b3580726af141ab2cddb1446b698, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pwm: 0
-  speed: 100
-  direction: {x: 0, y: 0, z: 1}
-  droneRb: {fileID: 0}
+  force: 1000
+  _signal: 0

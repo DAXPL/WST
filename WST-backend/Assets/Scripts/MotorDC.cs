@@ -1,38 +1,20 @@
 using UnityEngine;
-using System.Collections;
 
-public class MotorDC : MonoBehaviour {
-    [Range(0, 1f), SerializeField] private float pwm;
-    [SerializeField] private float speed;
-    [SerializeField] private Vector3 direction;
-    [SerializeField] private Rigidbody droneRb;
-    private Coroutine _startMovingCoroutine;
-    
-    [ContextMenu("Start Moving")]
-    public void StartMoving() {
-        if (_startMovingCoroutine != null)
-            return;
+[ RequireComponent(typeof(Rigidbody))]
+public class MotorDC : MonoBehaviour, IPWMInput {
+    [SerializeField] private float force = 1000;
+    [Range(0, 1f)] private float _signal;
+    private Rigidbody _rb;
 
-        if (droneRb == null) 
-            throw new MissingComponentException("Drone rigidbody is missing");
-        
-        _startMovingCoroutine = StartCoroutine(MoveMotor());
-    } 
-    
-    [ContextMenu("Stop Moving")]
-    public void StopMoving() {
-        if (_startMovingCoroutine == null) 
-            return;
-        
-        StopCoroutine(_startMovingCoroutine);
-        _startMovingCoroutine = null;
-        droneRb.linearVelocity = Vector3.zero;
+    private void Awake() {
+        _rb = GetComponent<Rigidbody>();
+    }
+
+    private void FixedUpdate() {
+        _rb.AddForce(transform.up * (_signal * force * Time.fixedDeltaTime));
     }
     
-    private IEnumerator MoveMotor() {
-        while (true) {
-            droneRb.linearVelocity = (pwm * Time.fixedDeltaTime * speed) * direction;
-            yield return new WaitForFixedUpdate();
-        }
+    public void SetPWMSignal(int signal) {
+        _signal = signal;
     }
 }
