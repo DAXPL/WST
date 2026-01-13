@@ -8,6 +8,7 @@
 #define UDP_CONTROLL_PORT 4210
 #define MAX_ROGUE_TIME 1000
 #define MIN_RSSI -80
+#define COMMUNICATION_METHOD 0
 
 enum DroneStatus
 {
