@@ -8,6 +8,7 @@
 #include "communicationModules\ICommunicationInterface.h"
 #include "communicationModules\CommunicationWiFiUDPModule.h"
 #include "communicationModules\CommunicationESPNowModule.h"
+#include "communicationModules\CommunicationSerialModule.h"
 
 class CommunicationModule
 {
