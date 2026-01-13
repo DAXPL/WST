@@ -18,7 +18,7 @@ void CommunicationModule::Init()
 
     if(communicationInterface == nullptr)
     {
-        //UWAGA zrypało się na amen
+        //Critical error!!!
     }else{
         communicationInterface->Init();
     }
