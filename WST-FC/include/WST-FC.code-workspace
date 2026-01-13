@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "espnow",
+			"path": "../../../../PlatformIO/Projects/espnow"
+		}
+	],
+	"settings": {}
+}

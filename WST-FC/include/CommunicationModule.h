@@ -5,22 +5,20 @@
 #include <WiFiUdp.h>
 #include "DroneData.h"
 #include "Configuration.h"
+#include "communicationModules\ICommunicationInterface.h"
+#include "communicationModules\CommunicationWiFiUDPModule.h"
+#include "communicationModules\CommunicationESPNowModule.h"
 
 class CommunicationModule
 {
 private:
     DroneControlData *sharedData;
-    WiFiUDP udp;
-    unsigned int localPort{0};
-    char packetBuffer[255];
-
-    unsigned long lastUpdate{0};
-    int8_t rssi{0};
+    ICommunicationInterface *communicationInterface;
     wl_status_t connectionStatus{WL_IDLE_STATUS};
     DroneStatus *droneStatus;
 
 public:
-    CommunicationModule(DroneControlData *dataPtr, unsigned int port, DroneStatus *status);
+    CommunicationModule(DroneControlData *dataPtr, DroneStatus *status);
 
     void Init();
     void Loop();
