@@ -23,6 +23,7 @@ public:
 
     void Init();
     void Loop();
+    void SendData(SensorsData* data);
 };
 
 #endif

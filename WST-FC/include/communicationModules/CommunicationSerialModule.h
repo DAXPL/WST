@@ -20,5 +20,6 @@ class CommunicationSerialModule : public ICommunicationInterface{
     CommunicationSerialModule(DroneControlData *dataPtr, DroneStatus *status);
     void Init() override;
     void Loop() override;
+    void SendData(SensorsData* data) override;
 };
 #endif
