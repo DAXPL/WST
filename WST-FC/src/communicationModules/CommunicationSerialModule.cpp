@@ -32,3 +32,7 @@ void CommunicationSerialModule::Loop()
         *droneStatus = WORKS;
     }
 }
+void CommunicationSerialModule::SendData(SensorsData* data)
+{
+
+}
