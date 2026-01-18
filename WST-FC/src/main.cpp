@@ -13,10 +13,10 @@
 
 #ifdef VEHICLE_TYPE_AIRBOAT
     #include "AirBoatMixer.h"
-    #include "sensors/MpuSensor.h"
+    #include "sensors/AdxlSensor.h"
     DCMotor motorL(16, 17, 4, 0); 
     DCMotor motorR(18, 19, 5, 1);
-    MpuSensor mpuSensor;
+    AdxlSensor adxlSensor;
 #endif
 
 DroneControlData droneControllData{};
@@ -43,7 +43,7 @@ void setup()
   #endif
   #ifdef VEHICLE_TYPE_AIRBOAT
     Serial.println("Configuring as AIRBOAT");
-    sensorsModule.AddSensor(&mpuSensor);
+    sensorsModule.AddSensor(&adxlSensor);
     droneMixer = new BoatMixer(&motorL, &motorR);
   #endif
 
