@@ -12,7 +12,7 @@ namespace WST.Drone.Modules
     {
         public string ipAddress = "192.168.0.39";
         public int port = 4210;
-        public float sendInterval = 1.0f / 10.0f;
+        public float tickRate = 1.0f / 10.0f;
 
         private DroneManager _drone;
         private UdpClient _udpClient;
@@ -20,6 +20,12 @@ namespace WST.Drone.Modules
         public void Init(DroneManager drone)
         {
             _drone = drone;
+            if(tickRate <= 0.0f )
+            {
+                Debug.LogError($"Tick rate too low! {tickRate} s!");
+                tickRate = 1.0f;
+                Debug.LogError($"New tickrate set at {tickRate} s!");
+            }
         }
         public void Loop()
         {
@@ -41,7 +47,7 @@ namespace WST.Drone.Modules
         [ContextMenu("Connect")]
         public void Connect()
         {
-            if (_udpClient != null) _udpClient.Close();
+            Disconnect();
             _udpClient = new UdpClient();
             _remoteEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
             StartCoroutine(SendLoop());
@@ -58,27 +64,27 @@ namespace WST.Drone.Modules
         {
             while (true)
             {
-                if (_drone == null)
+                if (_drone != null)
                 {
-                    yield return new WaitForSeconds(sendInterval);
-                    continue;
-                }
-                int size = Marshal.SizeOf(_drone.controllData);
-                byte[] bytes = new byte[size];
-                IntPtr ptr = Marshal.AllocHGlobal(size);
+                    yield return new WaitForSeconds(tickRate);
+                
+                    int size = Marshal.SizeOf(_drone.controllData);
+                    byte[] bytes = new byte[size];
+                    IntPtr ptr = Marshal.AllocHGlobal(size);
 
-                try
-                {
-                    Marshal.StructureToPtr(_drone.controllData, ptr, true);
-                    Marshal.Copy(ptr, bytes, 0, size);
-                }
-                finally
-                {
-                    Marshal.FreeHGlobal(ptr);
-                }
+                    try
+                    {
+                        Marshal.StructureToPtr(_drone.controllData, ptr, true);
+                        Marshal.Copy(ptr, bytes, 0, size);
+                    }
+                    finally
+                    {
+                        Marshal.FreeHGlobal(ptr);
+                    }
 
-                _udpClient.Send(bytes, bytes.Length, _remoteEndPoint);
-                yield return new WaitForSeconds(sendInterval);
+                    _udpClient.Send(bytes, bytes.Length, _remoteEndPoint);
+                }
+                yield return new WaitForSeconds(tickRate);
             }
         }
 
@@ -103,7 +109,7 @@ namespace WST.Drone.Modules
                         Debug.LogError($"Receive Error: {e.Message}");
                     }
                 }
-                yield return null;
+                yield return new WaitForSeconds(tickRate);
             }
         }
 
