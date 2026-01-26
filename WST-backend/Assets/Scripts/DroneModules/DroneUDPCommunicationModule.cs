@@ -4,28 +4,33 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using WST.Control;
-namespace WST.Communication
-{
-    public class DroneCommunicationController : MonoBehaviour
-    {
-        [SerializeField] private Controller controller;
-        [Header("Network Settings")]
-        private string ipAddress = "192.168.0.39";
-        private int port = 4210;
-        [SerializeField] private float sendInterval = 1.0f/10.0f;
+using WST.Drone;
 
+namespace WST.Drone.Modules
+{
+    public class DroneUDPCommunicationModule : MonoBehaviour, IDroneModule
+    {
+        public string ipAddress = "192.168.0.39";
+        public int port = 4210;
+        public float tickRate = 1.0f / 10.0f;
+
+        private DroneManager _drone;
         private UdpClient _udpClient;
         private IPEndPoint _remoteEndPoint;
-
-        [SerializeField] private SensorsData CurrentTelemetry;
-
-        private void OnDestroy()
+        public void Init(DroneManager drone)
         {
-            StopAllCoroutines();
-            if (_udpClient != null) _udpClient.Close();
+            _drone = drone;
+            if(tickRate <= 0.0f )
+            {
+                Debug.LogError($"Tick rate too low! {tickRate} s!");
+                tickRate = 1.0f;
+                Debug.LogError($"New tickrate set at {tickRate} s!");
+            }
         }
-
+        public void Loop()
+        {
+            if (_drone == null) return;
+        }
         public void UpdateIP(string s)
         {
             ipAddress = s;
@@ -33,7 +38,7 @@ namespace WST.Communication
         public void UpdatePort(string s)
         {
             int newPort = 0;
-            if(Int32.TryParse(s, out newPort))
+            if (Int32.TryParse(s, out newPort))
             {
                 port = newPort;
             }
@@ -42,28 +47,34 @@ namespace WST.Communication
         [ContextMenu("Connect")]
         public void Connect()
         {
-            if (_udpClient != null) _udpClient.Close();
+            Disconnect();
             _udpClient = new UdpClient();
             _remoteEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-            StartCoroutine(ConnectionLoop());
+            StartCoroutine(SendLoop());
             StartCoroutine(ReceiveLoop());
         }
-
-        private IEnumerator ConnectionLoop()
+        
+        [ContextMenu("Disconnect")]
+        public void Disconnect()
+        {
+            if (_udpClient != null) _udpClient.Close();
+        }
+        
+        private IEnumerator SendLoop()
         {
             while (true)
             {
-                if (controller)
+                if (_drone != null)
                 {
-                    DroneControlData data = controller.GetControls();
-
-                    int size = Marshal.SizeOf(data);
+                    yield return new WaitForSeconds(tickRate);
+                
+                    int size = Marshal.SizeOf(_drone.controllData);
                     byte[] bytes = new byte[size];
                     IntPtr ptr = Marshal.AllocHGlobal(size);
 
                     try
                     {
-                        Marshal.StructureToPtr(data, ptr, true);
+                        Marshal.StructureToPtr(_drone.controllData, ptr, true);
                         Marshal.Copy(ptr, bytes, 0, size);
                     }
                     finally
@@ -73,7 +84,7 @@ namespace WST.Communication
 
                     _udpClient.Send(bytes, bytes.Length, _remoteEndPoint);
                 }
-                yield return new WaitForSeconds(sendInterval);
+                yield return new WaitForSeconds(tickRate);
             }
         }
 
@@ -88,10 +99,9 @@ namespace WST.Communication
                         IPEndPoint source = new IPEndPoint(IPAddress.Any, 0);
                         byte[] receivedBytes = _udpClient.Receive(ref source);
 
-                        if (receivedBytes.Length == Marshal.SizeOf(typeof(SensorsData)))
+                        if (_drone != null && receivedBytes.Length == Marshal.SizeOf(typeof(SensorsData)))
                         {
-                            CurrentTelemetry = Deserialize<SensorsData>(receivedBytes);
-                            Debug.Log($"Telemetry -> Pitch: {CurrentTelemetry.pitch/100.0f}, Voltage: {CurrentTelemetry.voltage}");
+                            _drone.sensorsData = Deserialize<SensorsData>(receivedBytes);
                         }
                     }
                     catch (Exception e)
@@ -99,9 +109,10 @@ namespace WST.Communication
                         Debug.LogError($"Receive Error: {e.Message}");
                     }
                 }
-                yield return null;
+                yield return new WaitForSeconds(tickRate);
             }
         }
+
         private T Deserialize<T>(byte[] bytes) where T : struct
         {
             GCHandle handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
@@ -114,9 +125,10 @@ namespace WST.Communication
                 handle.Free();
             }
         }
+        
         private void OnApplicationQuit()
         {
-            if (_udpClient != null) _udpClient.Close();
+            Disconnect();
         }
     }
 }
