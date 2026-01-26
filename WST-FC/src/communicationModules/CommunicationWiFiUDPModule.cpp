@@ -40,6 +40,8 @@ void CommunicationWiFiUDPModule::Loop()
         }
         memcpy(sharedData, packetBuffer, sizeof(DroneControlData));
         lastUpdate = millis();
+        remoteIP = udp.remoteIP();
+        remotePort = udp.remotePort();
     }
     if (rssi < MIN_RSSI || connectionStatus != WL_CONNECTED || (millis() - lastUpdate) > MAX_ROGUE_TIME)
     {
@@ -49,4 +51,12 @@ void CommunicationWiFiUDPModule::Loop()
     {
         *droneStatus = WORKS;
     }
+}
+
+void CommunicationWiFiUDPModule::SendData(SensorsData* data)
+{
+    if(remotePort==0 || data == nullptr) return;
+    udp.beginPacket(remoteIP, remotePort);
+    udp.write((const uint8_t*)data, sizeof(SensorsData));
+    udp.endPacket();
 }

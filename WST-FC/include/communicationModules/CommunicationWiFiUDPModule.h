@@ -18,10 +18,14 @@ class CommunicationWiFiUDPModule : public ICommunicationInterface{
     wl_status_t connectionStatus{WL_IDLE_STATUS};
     DroneStatus *droneStatus;
 
+    IPAddress remoteIP;
+    unsigned int remotePort {0};
+
     public:
     CommunicationWiFiUDPModule(DroneControlData *dataPtr, unsigned int port, DroneStatus *status);
 
-    void Init();
-    void Loop();
+    void Init() override;
+    void Loop() override;
+    void SendData(SensorsData* data) override;
 };
 #endif

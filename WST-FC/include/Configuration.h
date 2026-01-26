@@ -9,6 +9,7 @@
 #define MAX_ROGUE_TIME 1000
 #define MIN_RSSI -80
 #define COMMUNICATION_METHOD 0
+#define TELEMETRY_TIME 1000
 
 enum DroneStatus
 {

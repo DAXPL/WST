@@ -10,34 +10,34 @@ class ServoMotor : public IActuator
 private:
     Servo _servo;
     int _pin;
-    int _minAngle;
-    int _maxAngle;
     int _minPulse;
     int _maxPulse;
+    int _centerAngle;
+    int16_t _maxDeflectionScaled; 
 
 public:
-    ServoMotor(int pin, int minAngle = 0, int maxAngle = 180, int minPulse = 1000, int maxPulse = 2000)
+    ServoMotor(int pin, int minPulse = 500, int maxPulse = 2400)
     {
         _pin = pin;
-        _minAngle = minAngle;
-        _maxAngle = maxAngle;
         _minPulse = minPulse;
         _maxPulse = maxPulse;
+        _centerAngle = 90; 
+        _maxDeflectionScaled = 9000; 
     }
 
     void Init() override
     {
-        ESP32PWM::allocateTimer(0);
         _servo.setPeriodHertz(50);
         _servo.attach(_pin, _minPulse, _maxPulse);
+        Serial.println(_pin);
         Set(0);
     }
 
-    void Set(int16_t speed) override
+    void Set(int16_t value) override
     {
-        speed = constrain(speed, -1000, 1000);
-        int angle = map(speed, -1000, 1000, _minAngle, _maxAngle);
-        _servo.write(angle);
+        int targetAngle = _centerAngle + (value / 100);
+        targetAngle = constrain(targetAngle, 0, 180);
+        _servo.write(targetAngle);
     }
 
     void Loop() override {}
