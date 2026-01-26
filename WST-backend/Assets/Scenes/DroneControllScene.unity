@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 914c0c6fd95a4e541836ddbe0945060e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controller: {fileID: 603113143}
+  controller: {fileID: 603113143}
 --- !u!114 &622062070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ipAddress: 192.168.0.39
   port: 4210
-  sendInterval: 0.1
+  tickRate: 0.1
 --- !u!114 &622062071
 MonoBehaviour:
   m_ObjectHideFlags: 0
