@@ -1,0 +1,13 @@
+services:
+  ml_model:
+    build:
+      dockerfile: .docker/ml_model/Dockerfile
+      context: .
+    command: bash -c "mlagents-learn /work/Assets/config/ppo/Basic.yaml --run-id=$(date +%s)"
+    ports:
+      - 5004:5004
+    volumes:
+      - ./Assets/config/ppo:/work/Assets/config/ppo:r
+      - ./Assets/ML-Models:/work/results
+    tty: true
+    stdin_open: true
