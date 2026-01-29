@@ -61,3 +61,7 @@ void CommunicationESPNowModule::OnDataReceived(const uint8_t *mac, const uint8_t
     }
     instance->lastDataTime = millis();
 }
+void CommunicationESPNowModule::SendData(SensorsData* data)
+{
+
+}

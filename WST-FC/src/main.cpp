@@ -13,8 +13,10 @@
 
 #ifdef VEHICLE_TYPE_AIRBOAT
     #include "AirBoatMixer.h"
+    #include "sensors/AdxlSensor.h"
     DCMotor motorL(16, 17, 4, 0); 
     DCMotor motorR(18, 19, 5, 1);
+    AdxlSensor adxlSensor;
 #endif
 
 DroneControlData droneControllData{};
@@ -28,6 +30,7 @@ CommunicationModule comms(&droneControllData, &connectionStatus);
 SensorsModule sensorsModule(&sensorsData);
 
 IMixer* droneMixer = nullptr;
+unsigned long lastTelemetryTimestamp {0};
 
 void setup()
 {
@@ -40,6 +43,7 @@ void setup()
   #endif
   #ifdef VEHICLE_TYPE_AIRBOAT
     Serial.println("Configuring as AIRBOAT");
+    sensorsModule.AddSensor(&adxlSensor);
     droneMixer = new BoatMixer(&motorL, &motorR);
   #endif
 
@@ -52,5 +56,10 @@ void loop()
 {
   comms.Loop();
   sensorsModule.Loop();
-  if(droneMixer != nullptr) droneMixer->Update(&droneControllData);
+  if(millis() - lastTelemetryTimestamp > TELEMETRY_TIME)
+  {
+    lastTelemetryTimestamp = millis();
+    comms.SendData(&sensorsData);
+  } 
+  if(droneMixer != nullptr) droneMixer->Update(&droneControllData, &sensorsData);
 }

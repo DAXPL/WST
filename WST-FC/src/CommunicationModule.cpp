@@ -15,6 +15,9 @@ void CommunicationModule::Init()
     if(COMMUNICATION_METHOD == 1){
         communicationInterface = new CommunicationESPNowModule(sharedData, droneStatus);
     }
+    if(COMMUNICATION_METHOD == 2){
+        communicationInterface = new CommunicationSerialModule(sharedData, droneStatus);
+    }
 
     if(communicationInterface == nullptr)
     {
@@ -28,4 +31,9 @@ void CommunicationModule::Loop()
 {
     if(communicationInterface == nullptr) return;
     communicationInterface -> Loop();
+}
+void CommunicationModule::SendData(SensorsData* data)
+{
+    if(communicationInterface == nullptr) return;
+    communicationInterface->SendData(data);
 }

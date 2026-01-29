@@ -5,6 +5,7 @@
 #include "IActuator.h"
 #include <Arduino.h>
 #include "DCMotor.h"
+#include "ISensor.h"
 
 #define MAX_DC_SPEED 1000
 class BoatMixer : public IMixer
@@ -23,14 +24,14 @@ public:
         if(_motorRight)_motorRight->Init();
     }
 
-    void Update(DroneControlData *input) override
+    void Update(DroneControlData *input, SensorsData *sensors) override
     {
         //"Differential Drive"
         int16_t throttle = input->throttle;
         int16_t yaw = input->yaw;
 
-        int16_t leftSpeed = constrain(throttle + yaw, -MAX_DC_SPEED, MAX_DC_SPEED);
-        int16_t rightSpeed = constrain(throttle - yaw, -MAX_DC_SPEED, MAX_DC_SPEED);
+        int16_t leftSpeed = constrain(throttle + yaw, 0, MAX_DC_SPEED);
+        int16_t rightSpeed = constrain(throttle - yaw, 0, MAX_DC_SPEED);
 
         if(_motorRight)
         {
