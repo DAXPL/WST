@@ -28,8 +28,10 @@ public class WaterBuoyancyController : MonoBehaviour {
     private void Awake() {
         if(rigidBody == null) rigidBody = GetComponent<Rigidbody>();
 
+        if(water == null) water = (WaterSurface)FindFirstObjectByType(typeof(WaterSurface), FindObjectsInactive.Exclude);
+
         if (water == null) {
-            Debug.LogError("No water surface attached.");
+            Debug.LogError("No water surface found or attached.");
         }
     }
 
