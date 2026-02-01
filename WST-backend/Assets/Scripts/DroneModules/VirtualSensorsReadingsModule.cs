@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using WST.Drone.Modules;
 namespace WST.Drone.Modules
 {
     public class VirtualSensorsReadingsModule : MonoBehaviour, IDroneModule
@@ -27,12 +26,16 @@ namespace WST.Drone.Modules
             }
             for (int i = 0; i < _drone.sensorsData.distanceSensors.Length; i++) 
             {
+                
                 bool canReadFromSensor = i < proximitySensors.Length && proximitySensors[i] != null;
-                ushort val = canReadFromSensor ?
-                    Convert.ToUInt16(proximitySensors[i].ReadValue()) 
-                    : (ushort)0;
-                val *= 100;
-                _drone.sensorsData.distanceSensors[i] = val;   
+                float distance = canReadFromSensor ?
+                    (float)proximitySensors[i].ReadValue()
+                    :0.0f;
+                distance *= 100;//to cm
+                if (distance < 0) distance = 0;
+                ushort val = (ushort)distance;
+                _drone.sensorsData.distanceSensors[i] = val;
+                
             }
 
         }

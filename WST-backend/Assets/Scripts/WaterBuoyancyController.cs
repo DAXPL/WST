@@ -2,101 +2,118 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
-public class WaterBuoyancyController : MonoBehaviour {
-    [Header("Components")]
-    [SerializeField] private WaterSurface water;
+public class OptimizedBoatPhysics : MonoBehaviour
+{
+    [Header("Settings")]
+    public WaterSurface water;
+    [Tooltip("U¿yj uproszczonego Mesha (np. Cube) dla wydajnoœci!")]
+    public Mesh simplifiedHullMesh;
+    public float fluidDensity = 1000f; // gêstoœæ wody
+    public float displacementAmount = 2f; // Jak mocno wypiera wodê
 
-    [Header("Buoyancy Settings")]
-    [Tooltip("How much of the object will be submerged.")]
-    [SerializeField] private float submersionDepth = 4;
+    [Header("Hydrodynamics")]
+    public float forwardDrag = 1f;  // Opór czo³owy
+    public float sideDrag = 50f;    // Opór boczny (KIL) - to jest kluczowe!
+    public float angularDrag = 2f;
 
-    [Tooltip("How strong will the object bounce back up when submerged.")]
-    [SerializeField] private float submergedForceMultipier = 2;
+    public Rigidbody rb;
+    private Vector3[] voxels; // Nasze punkty wypornoœci
+    private int voxelCount;
 
-    [Tooltip("Slows down movement in water. Higher values make the object stop faster.")]
-    [SerializeField] private float waterDrag = 2;
+    void Awake()
+    {
 
-    [Tooltip("Slows down rotation in water. Higher values make the object rotate less.")]
-    [SerializeField] private float waterAngularDrag = 2;
+        // Jeœli nie poda³eœ uproszczonego mesha, weŸ ten z filtra (ryzykowne wydajnoœciowo!)
+        if (simplifiedHullMesh == null) simplifiedHullMesh = GetComponent<MeshFilter>().mesh;
 
-    [SerializeField] private Rigidbody rigidBody;
-    private readonly List<Vector3> vertices = new();
-    private Vector3 totalForce;
-    private Vector3 totalTorque;
-    private int submergedFloaters;
+        voxels = simplifiedHullMesh.vertices;
+        voxelCount = voxels.Length;
 
-    private void Awake() {
-        if(rigidBody == null) rigidBody = GetComponent<Rigidbody>();
+        if (water == null) water = (WaterSurface)FindFirstObjectByType(typeof(WaterSurface), FindObjectsInactive.Exclude);
 
-        if(water == null) water = (WaterSurface)FindFirstObjectByType(typeof(WaterSurface), FindObjectsInactive.Exclude);
 
-        if (water == null) {
+
+        if (water == null)
+        {
+
             Debug.LogError("No water surface found or attached.");
         }
     }
+    void FixedUpdate()
+    {
+        if (water == null) return;
 
-    private void Start() {
-        MeshFilter meshFilter = GetComponent<MeshFilter>();
-        foreach (Vector3 vertex in meshFilter.mesh.vertices) {
-            // Ignore vertices above object's local level of water
-            if (vertex.y > 0)
-                continue;
+        float submergedPercent = 0f;
+        int submergedCount = 0;
 
-            // Skip loop to avoid duplicate values in the list
-            if (vertices.Contains(vertex))
-                continue;
+        // 1. Obliczanie Wypornoœci (Buoyancy) dla ka¿dego punktu
+        for (int i = 0; i < voxelCount; i++)
+        {
+            Vector3 worldPt = transform.TransformPoint(voxels[i]);
 
-            vertices.Add(vertex);
-        }
-    }
+            // Pobieramy parametry wody w danym punkcie (fale)
+            WaterSearchParameters search = new WaterSearchParameters { startPositionWS = worldPt };
+            WaterSearchResult result;
 
-    private void FixedUpdate() {
-        // Reset values
-        submergedFloaters = 0;
-        totalForce = Vector3.zero;
-        totalTorque = Vector3.zero;
+            if (water.ProjectPointOnWaterSurface(search, out result))
+            {
+                float waterHeight = result.projectedPositionWS.y;
 
-        foreach (Vector3 vertex in vertices) {
-            // Transform vertex from local to world space
-            Vector3 vertexPos = transform.TransformPoint(vertex);
+                // Jeœli punkt jest pod wod¹
+                if (worldPt.y < waterHeight)
+                {
+                    float depth = waterHeight - worldPt.y;
 
-            // Get water height at vertex position
-            WaterSearchParameters projectionParams = new() {
-                startPositionWS = vertexPos
-            };
+                    // Si³a wyporu Archimedesa (uproszczona)
+                    // Dzielimy przez iloœæ punktów, ¿eby suma si³ by³a poprawna niezale¿nie od gêstoœci siatki
+                    float buoyantForce = (fluidDensity * Mathf.Abs(Physics.gravity.y) * depth * displacementAmount) / voxelCount;
 
-            // Skip loop if vertex is not over a water surface
-            if (!water.ProjectPointOnWaterSurface(projectionParams, out WaterSearchResult projectionResult))
-                continue;
+                    // Aplikujemy w punkcie - to daje nam stabilizacjê i przechy³y na falach
+                    rb.AddForceAtPosition(Vector3.up * buoyantForce, worldPt, ForceMode.Force);
 
-            // Get water height at vertex
-            float waterHeight = projectionResult.projectedPositionWS.y;
-
-            // If vertex is underwater apply buoyancy
-            if (vertexPos.y < waterHeight) {
-                submergedFloaters++;
-
-                // Calculate buoyancy force for vertex
-                float submergedAmount = Mathf.Clamp01((waterHeight - vertexPos.y) / submersionDepth);
-                Vector3 buoyancyForce = 
-                    Mathf.Abs(Physics.gravity.y) * submergedAmount * submergedForceMultipier * Vector3.up;
-
-                // Add forces to total force vector at position of this vertex
-                totalForce += Time.fixedDeltaTime * waterDrag * -rigidBody.linearVelocity;
-                totalTorque += Time.fixedDeltaTime * waterAngularDrag * -rigidBody.angularVelocity;
-
-                // Apply buoyancy force at the vertex position
-                rigidBody.AddForceAtPosition(buoyancyForce, vertexPos, ForceMode.Acceleration);
+                    submergedCount++;
+                }
             }
         }
 
-        // Apply total water resistance Y force at once if any vertex is submerged
-        if (submergedFloaters > 0) {
-            rigidBody.AddForce(totalForce, ForceMode.VelocityChange);
-            rigidBody.AddTorque(totalTorque, ForceMode.VelocityChange);
+        submergedPercent = (float)submergedCount / voxelCount;
+
+        // 2. Aplikowanie Oporów (Hydrodynamics) - TYLKO jeœli ³ódŸ jest w wodzie
+        if (submergedPercent > 0.1f)
+        {
+            ApplyHydrodynamics(submergedPercent);
         }
     }
 
+    void ApplyHydrodynamics(float submersionFactor)
+    {
+        // Prêdkoœæ lokalna (wzglêdem dziobu ³odzi)
+        Vector3 localVelocity = transform.InverseTransformDirection(rb.linearVelocity);
+
+        // Kluczowe dla realizmu: Oddzielny opór dla przodu (Z) i boków (X)
+        float dragZ = localVelocity.z * forwardDrag;
+        float dragX = localVelocity.x * sideDrag; // To symuluje kil/miecz!
+        float dragY = localVelocity.y * forwardDrag; // Opór przy zanurzaniu/wynurzaniu
+
+        Vector3 localDragForce = new Vector3(-dragX, -dragY, -dragZ);
+
+        // Transformujemy si³ê oporu z powrotem na œwiat i skalujemy przez zanurzenie
+        Vector3 worldDragForce = transform.TransformDirection(localDragForce) * submersionFactor;
+
+        rb.AddForce(worldDragForce, ForceMode.Force);
+
+        // Opór obrotowy (te¿ zale¿ny od zanurzenia)
+        rb.AddTorque(-rb.angularVelocity * angularDrag * submersionFactor, ForceMode.Force);
+    }
+
+    // Wizualizacja dla debugowania
+    private void OnDrawGizmosSelected()
+    {
+        if (voxels == null) return;
+        Gizmos.color = Color.cyan;
+        foreach (var v in voxels)
+        {
+            Gizmos.DrawSphere(transform.TransformPoint(v), 0.05f);
+        }
+    }
 }
-
-

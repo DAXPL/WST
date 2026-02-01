@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8121623953617890500}
   - component: {fileID: 174306566265440992}
   - component: {fileID: 6503688183671357169}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 3145989599144362216}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.3, z: 0.8}
+  m_LocalPosition: {x: 0, y: -0, z: 0.21362}
+  m_LocalScale: {x: 0.4, y: 0.3, z: 1.227224}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8531796258105472184}
@@ -122,164 +122,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   water: {fileID: 0}
-  submersionDepth: 4
-  submergedForceMultipier: 2
-  waterDrag: 2
-  waterAngularDrag: 2
-  rigidBody: {fileID: 4739156701173704349}
---- !u!1 &3821002816197555099
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5638906372472852791}
-  - component: {fileID: 3928363863778448254}
-  - component: {fileID: 3252020810214339784}
-  - component: {fileID: 9169336659798085289}
-  - component: {fileID: 5170538998972246871}
-  - component: {fileID: 6056481465703183331}
-  m_Layer: 0
-  m_Name: Acc
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5638906372472852791
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3821002816197555099}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.126, z: 0.168}
-  m_LocalScale: {x: 0.2222, y: 0.2222, z: 0.2222}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8531796258105472184}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3928363863778448254
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3821002816197555099}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &3252020810214339784
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3821002816197555099}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &9169336659798085289
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3821002816197555099}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &5170538998972246871
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3821002816197555099}
-  serializedVersion: 4
-  m_Mass: 0.1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &6056481465703183331
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3821002816197555099}
-  serializedVersion: 1
-  m_ConnectedBody: {fileID: 4739156701173704349}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
+  simplifiedHullMesh: {fileID: 0}
+  fluidDensity: 1
+  displacementAmount: 20
+  forwardDrag: 10
+  sideDrag: 50
+  angularDrag: 2
+  rb: {fileID: 4739156701173704349}
 --- !u!1 &9156086571873292217
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,7 +145,7 @@ GameObject:
   - component: {fileID: 2157085506013343299}
   - component: {fileID: 5305614232398686885}
   - component: {fileID: 2657699540267236713}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Airboat virtual drone
   m_TagString: Drone
   m_Icon: {fileID: 2800000, guid: be0120271f7284aa3ac25bee6cbb813c, type: 3}
@@ -323,7 +172,6 @@ Transform:
   - {fileID: 6824661001316136474}
   - {fileID: 7369841543891270926}
   - {fileID: 5006691677478410908}
-  - {fileID: 5638906372472852791}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3759292040875501450
@@ -428,6 +276,9 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
+  distancedebug1: 0
+  distancedebug2: 0
+  distancedebug3: 0
 --- !u!114 &5305614232398686885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,7 +304,7 @@ MonoBehaviour:
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: Air Boat Behavior
+  m_BehaviorName: AirBoat
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -488,11 +339,11 @@ PrefabInstance:
       objectReference: {fileID: 4739156701173704349}
     - target: {fileID: 6051212962561388534, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
       propertyPath: force
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7049009121450576194, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
       propertyPath: m_Mass
-      value: 0.05
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7166989928024630466, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
       propertyPath: m_LocalScale.x
@@ -551,6 +402,10 @@ PrefabInstance:
       value: MotorDC (1)
       objectReference: {fileID: 0}
     - target: {fileID: 8531805785847221842, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531805785847221842, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -586,6 +441,10 @@ PrefabInstance:
     - target: {fileID: 2382795801631791268, guid: 52f9df1fe83a05144985dcbf7fcd46ca, type: 3}
       propertyPath: m_Name
       value: Gyroscope
+      objectReference: {fileID: 0}
+    - target: {fileID: 2382795801631791268, guid: 52f9df1fe83a05144985dcbf7fcd46ca, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2796062544590282424, guid: 52f9df1fe83a05144985dcbf7fcd46ca, type: 3}
       propertyPath: m_LocalScale.x
@@ -732,6 +591,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ProximitySensor
       objectReference: {fileID: 0}
+    - target: {fileID: 8615276092325505294, guid: 698fbf4f15f3f6240ab0c70b8119c10a, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -817,6 +680,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ProximitySensor (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8615276092325505294, guid: 698fbf4f15f3f6240ab0c70b8119c10a, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -852,11 +719,11 @@ PrefabInstance:
       objectReference: {fileID: 4739156701173704349}
     - target: {fileID: 6051212962561388534, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
       propertyPath: force
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7049009121450576194, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
       propertyPath: m_Mass
-      value: 0.05
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7166989928024630466, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
       propertyPath: m_LocalScale.x
@@ -913,6 +780,10 @@ PrefabInstance:
     - target: {fileID: 8531805785847221842, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
       propertyPath: m_Name
       value: MotorDC
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531805785847221842, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8531805785847221842, guid: d7883c2b57589e1459807dba61979cf1, type: 3}
       propertyPath: m_IsActive
@@ -1002,6 +873,10 @@ PrefabInstance:
     - target: {fileID: 8615276092325505294, guid: 698fbf4f15f3f6240ab0c70b8119c10a, type: 3}
       propertyPath: m_Name
       value: ProximitySensor (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8615276092325505294, guid: 698fbf4f15f3f6240ab0c70b8119c10a, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
