@@ -18,6 +18,14 @@ void CommunicationWiFiUDPModule::Init()
         Serial.print(".");
         delay(500);
     }
+    WiFi.setHostname("WST_DRONE");
+    // IPAddress ip(10,0,0,99);
+    // IPAddress gateway(10,0,0,1);
+    // IPAddress subnet(255,255,255,0);
+    // WiFi.config(ip, gateway, subnet);
+    //to do ustalić adresacje maliny wewn. dla dronów po wifi
+    //to do ustawić routingi pomiędzy tunelem a siecią lokalną
+    WiFi.enableLongRange(true);//sprawdzić z i bez
     Serial.println("\nConnected!\nIP Address: " + WiFi.localIP());
     Serial.println("MAC Address:\n" + WiFi.macAddress());
     udp.begin(localPort);
