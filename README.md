@@ -6,7 +6,7 @@ While the rest of the industry begs you to buy proprietary, locked-down flight c
 
 ---
 
-## 🌀 The "Why": A Manifesto of Experimental Madness
+## 🌀 A Manifesto of Experimental Madness
 
 WST was born from a simple, dangerous question: *What happens if we stop being sensible?* We realized that standard drone and boat kits are "black boxes"—boring, restricted, and way too expensive for what they actually do. **WST is our rebel shout against that.** This project is a massive evolution of our previous work, **XR BINIU** (Mixed Reality Blended Intelligence for Navigable Interactive UV's). We took the solid research from that project and decided to dial the "weirdness" up to eleven.
 
@@ -16,7 +16,7 @@ We are building a system that allows a neural network, trained inside a high-fid
   <img src="Graphics/gunboat.webp" alt="WST Logo" width="400">
 </p>
 
-## 🧠 The Philosophy: "Because We Can"
+## 🧠 Because We Can
 
 Our guiding principles completely ignore market trends in favor of absolute experimental chaos:
 
@@ -27,7 +27,7 @@ Our guiding principles completely ignore market trends in favor of absolute expe
 
 ---
 
-## 🏗️ Technical Architecture: The "Magic" Under the Hood
+## 🏗️ Technical Architecture
 
 The architecture is built on the **Breadboard Interface** concept—a modular legacy from the XR BINIU project. By treating every hardware component as a "Virtual Sensor" or "Virtual Motor," we achieve a seamless, reality-bending transition from the digital world to the physical one.
 
