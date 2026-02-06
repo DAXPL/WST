@@ -24,6 +24,7 @@ public:
     void Init();
     void Loop();
     void SendData(SensorsData* data);
+    void SendData(DroneControlData* data);
 };
 
 #endif
