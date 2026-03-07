@@ -12,14 +12,13 @@ void CommunicationWiFiUDPModule::Init()
 {
     Serial.print("Connecting to WiFi");
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
+    delay(500);
     while (WiFi.status() != WL_CONNECTED)
     {
         Serial.print(".");
         delay(500);
     }
-    Serial.println("\nConnected!\nIP Address: " + WiFi.localIP());
-    Serial.println("MAC Address:\n" + WiFi.macAddress());
+    Serial.print("Connected!");
     udp.begin(localPort);
 }
 void CommunicationWiFiUDPModule::Loop()
