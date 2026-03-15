@@ -22,6 +22,7 @@ class CommunicationESPNowModule : public ICommunicationInterface{
     void Init() override;
     void Loop() override;
     void SendData(SensorsData* data) override;
+    void SendData(DroneControlData* data);
     static void OnDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len);
 };
 
