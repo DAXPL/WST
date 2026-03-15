@@ -6,24 +6,21 @@ public class OptimizedBoatPhysics : MonoBehaviour
 {
     [Header("Settings")]
     public WaterSurface water;
-    [Tooltip("U¿yj uproszczonego Mesha (np. Cube) dla wydajnoœci!")]
     public Mesh simplifiedHullMesh;
-    public float fluidDensity = 1000f; // gêstoœæ wody
-    public float displacementAmount = 2f; // Jak mocno wypiera wodê
+    public float fluidDensity = 1000f;
+    public float displacementAmount = 2f;
 
     [Header("Hydrodynamics")]
-    public float forwardDrag = 1f;  // Opór czo³owy
-    public float sideDrag = 50f;    // Opór boczny (KIL) - to jest kluczowe!
+    public float forwardDrag = 1f;
+    public float sideDrag = 50f;
     public float angularDrag = 2f;
 
     public Rigidbody rb;
-    private Vector3[] voxels; // Nasze punkty wypornoœci
+    private Vector3[] voxels;
     private int voxelCount;
 
     void Awake()
     {
-
-        // Jeœli nie poda³eœ uproszczonego mesha, weŸ ten z filtra (ryzykowne wydajnoœciowo!)
         if (simplifiedHullMesh == null) simplifiedHullMesh = GetComponent<MeshFilter>().mesh;
 
         voxels = simplifiedHullMesh.vertices;
@@ -63,12 +60,7 @@ public class OptimizedBoatPhysics : MonoBehaviour
                 if (worldPt.y < waterHeight)
                 {
                     float depth = waterHeight - worldPt.y;
-
-                    // Si³a wyporu Archimedesa (uproszczona)
-                    // Dzielimy przez iloœæ punktów, ¿eby suma si³ by³a poprawna niezale¿nie od gêstoœci siatki
                     float buoyantForce = (fluidDensity * Mathf.Abs(Physics.gravity.y) * depth * displacementAmount) / voxelCount;
-
-                    // Aplikujemy w punkcie - to daje nam stabilizacjê i przechy³y na falach
                     rb.AddForceAtPosition(Vector3.up * buoyantForce, worldPt, ForceMode.Force);
 
                     submergedCount++;
@@ -78,7 +70,6 @@ public class OptimizedBoatPhysics : MonoBehaviour
 
         submergedPercent = (float)submergedCount / voxelCount;
 
-        // 2. Aplikowanie Oporów (Hydrodynamics) - TYLKO jeœli ³ódŸ jest w wodzie
         if (submergedPercent > 0.1f)
         {
             ApplyHydrodynamics(submergedPercent);
@@ -106,7 +97,6 @@ public class OptimizedBoatPhysics : MonoBehaviour
         rb.AddTorque(-rb.angularVelocity * angularDrag * submersionFactor, ForceMode.Force);
     }
 
-    // Wizualizacja dla debugowania
     private void OnDrawGizmosSelected()
     {
         if (voxels == null) return;

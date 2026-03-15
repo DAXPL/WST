@@ -9,9 +9,6 @@ namespace WST.Drone.Modules
         private DroneManager _drone;
         private Vector3 _startPosition;
         private Vector3 _startRotation;
-        public ushort distancedebug1 = 0;
-        public ushort distancedebug2 = 0;
-        public ushort distancedebug3 = 0;
         public void Init(DroneManager drone)
         {
             _drone = drone;
@@ -58,10 +55,6 @@ namespace WST.Drone.Modules
             sensor.AddObservation(_drone.sensorsData.distanceSensors[3]);
             sensor.AddObservation(_drone.sensorsData.distanceSensors[4]);
             sensor.AddObservation(_drone.sensorsData.distanceSensors[5]);
-
-            distancedebug1 = _drone.sensorsData.distanceSensors[0];
-            distancedebug2 = _drone.sensorsData.distanceSensors[0];
-            distancedebug3 = _drone.sensorsData.distanceSensors[0];
         }
 
         public override void OnActionReceived(ActionBuffers actions)
