@@ -1,6 +1,7 @@
 #include "communicationModules\CommunicationWiFiUDPModule.h"
 #include "Configuration.h"
 
+
 CommunicationWiFiUDPModule::CommunicationWiFiUDPModule(DroneControlData *dataPtr, unsigned int port, DroneStatus *status)
 {
     sharedData = dataPtr;
@@ -19,6 +20,28 @@ void CommunicationWiFiUDPModule::Init()
         delay(500);
     }
     Serial.print("Connected!");
+
+    #ifdef USE_WIREGUARD
+        configTime(9 * 60 * 60, 0, "ntp.jst.mfeed.ad.jp", "ntp.nict.jp", "time.google.com");
+        time_t now = time(nullptr);
+        while (now < 8 * 3600 * 2) 
+        {
+            delay(500);
+            Serial.print(".");
+            now = time(nullptr);
+        }
+        Serial.println("\nTime synchronized!");
+
+        wg.begin(
+            IPAddress().fromString(WG_LOCAL_IP),
+            WG_PRIVATE_KEY,
+            WG_PEER_ADDRESS,
+            WG_PEER_PUBLIC_KEY,
+            WG_PEER_PORT
+        );
+        Serial.println("WireGuard initialized.");
+    #endif
+
     udp.begin(localPort);
 }
 void CommunicationWiFiUDPModule::Loop()

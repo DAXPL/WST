@@ -6,6 +6,9 @@
 #include "DroneData.h"
 #include "ICommunicationInterface.h"
 #include "Configuration.h"
+#ifdef USE_WIREGUARD
+    #include <WireGuard-ESP32.h>
+#endif
 class CommunicationWiFiUDPModule : public ICommunicationInterface{
     private:
     DroneControlData *sharedData;
@@ -20,6 +23,10 @@ class CommunicationWiFiUDPModule : public ICommunicationInterface{
 
     IPAddress remoteIP;
     unsigned int remotePort {0};
+
+    #ifdef USE_WIREGUARD
+        WireGuard wg;
+    #endif
 
     public:
     CommunicationWiFiUDPModule(DroneControlData *dataPtr, unsigned int port, DroneStatus *status);
