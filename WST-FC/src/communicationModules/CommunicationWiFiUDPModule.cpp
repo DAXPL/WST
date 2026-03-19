@@ -21,8 +21,8 @@ void CommunicationWiFiUDPModule::Init()
     }
     Serial.print("Connected!");
 
-    #ifdef USE_WIREGUARD
-        configTime(9 * 60 * 60, 0, "ntp.jst.mfeed.ad.jp", "ntp.nict.jp", "time.google.com");
+    #if USE_WIREGUARD
+        configTime(0, 0, "pool.ntp.org", "time.nist.gov");
         time_t now = time(nullptr);
         while (now < 8 * 3600 * 2) 
         {
@@ -32,14 +32,17 @@ void CommunicationWiFiUDPModule::Init()
         }
         Serial.println("\nTime synchronized!");
 
+        IPAddress localIP;
+        localIP.fromString(WG_LOCAL_IP);
+
         wg.begin(
-            IPAddress().fromString(WG_LOCAL_IP),
+            localIP,
             WG_PRIVATE_KEY,
             WG_PEER_ADDRESS,
             WG_PEER_PUBLIC_KEY,
             WG_PEER_PORT
         );
-        Serial.println("WireGuard initialized.");
+        Serial.println("WireGuard initialized!");
     #endif
 
     udp.begin(localPort);
@@ -73,6 +76,17 @@ void CommunicationWiFiUDPModule::Loop()
     {
         *droneStatus = WORKS;
     }
+
+    #if USE_WIREGUARD
+        if (remotePort != 0 && (millis() - lastKeepaliveTime > KEEPALIVE_INTERVAL))
+        {
+            udp.beginPacket(remoteIP, remotePort);
+            udp.write(&KEEPALIVE_BYTE, 1);
+            udp.endPacket();
+            
+            lastKeepaliveTime = millis();
+        }
+    #endif
 }
 
 void CommunicationWiFiUDPModule::SendData(SensorsData* data)
@@ -81,4 +95,7 @@ void CommunicationWiFiUDPModule::SendData(SensorsData* data)
     udp.beginPacket(remoteIP, remotePort);
     udp.write((const uint8_t*)data, sizeof(SensorsData));
     udp.endPacket();
+    #if USE_WIREGUARD
+        lastKeepaliveTime = millis();
+    #endif
 }

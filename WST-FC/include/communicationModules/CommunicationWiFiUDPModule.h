@@ -26,6 +26,9 @@ class CommunicationWiFiUDPModule : public ICommunicationInterface{
 
     #ifdef USE_WIREGUARD
         WireGuard wg;
+        unsigned long lastKeepaliveTime = 0;
+        const unsigned long KEEPALIVE_INTERVAL = 20000;
+        const uint8_t KEEPALIVE_BYTE = 0xFF;
     #endif
 
     public:
