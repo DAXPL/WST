@@ -8,14 +8,16 @@ class DCMotor : public IActuator
 private:
     int _pinIN1, _pinIN2, _pinEN;
     int _pwmChannel;
+    bool _revDir;
 
 public:
-    DCMotor(int pinIN1, int pinIN2, int pinEN, int pwmChannel)
+    DCMotor(int pinIN1, int pinIN2, int pinEN, int pwmChannel, bool revDir = false)
     {
         _pinIN1 = pinIN1;
         _pinIN2 = pinIN2;
         _pinEN = pinEN;
         _pwmChannel = pwmChannel;
+        _revDir = revDir;
     }
 
     void Init() override
@@ -32,6 +34,8 @@ public:
         int pwmValue = map(abs(speed), 0, 1000, 0, 255);
         if (pwmValue > 255)
             pwmValue = 255;
+        
+        if(_revDir == true) speed = -speed;
 
         if (speed > 0)
         {

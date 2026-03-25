@@ -18,4 +18,14 @@ enum DroneStatus
     BROKEN
 };
 
+#define USE_WIREGUARD 1
+
+#if USE_WIREGUARD
+    #define WG_LOCAL_IP "10.0.0.2"
+    #define WG_PRIVATE_KEY "KLUCZ_PRYWATNY_ESP32="
+    #define WG_PEER_ADDRESS "198.51.100.1"
+    #define WG_PEER_PORT 51820
+    #define WG_PEER_PUBLIC_KEY "KLUCZ_PUBLICZNY_SERWERA="
+#endif
+
 #endif
