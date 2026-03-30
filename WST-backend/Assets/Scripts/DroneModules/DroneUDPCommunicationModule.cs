@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Events;
 using WST.Drone;
 
 namespace WST.Drone.Modules
@@ -17,6 +18,8 @@ namespace WST.Drone.Modules
         private DroneManager _drone;
         private UdpClient _udpClient;
         private IPEndPoint _remoteEndPoint;
+
+        [SerializeField] UnityEvent<string> onConnect;
         public void Init(DroneManager drone)
         {
             _drone = drone;
@@ -47,9 +50,11 @@ namespace WST.Drone.Modules
         [ContextMenu("Connect")]
         public void Connect()
         {
+            Debug.Log($"Connecting to {ipAddress}:{port}...");
             Disconnect();
             _udpClient = new UdpClient();
             _remoteEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+            onConnect.Invoke($"{ipAddress}");
             StartCoroutine(SendLoop());
             StartCoroutine(ReceiveLoop());
         }
