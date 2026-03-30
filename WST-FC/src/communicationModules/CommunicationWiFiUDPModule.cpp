@@ -1,6 +1,6 @@
 #include "communicationModules\CommunicationWiFiUDPModule.h"
 #include "Configuration.h"
-
+#include <esp_wifi.h> 
 
 CommunicationWiFiUDPModule::CommunicationWiFiUDPModule(DroneControlData *dataPtr, unsigned int port, DroneStatus *status)
 {
@@ -20,7 +20,7 @@ void CommunicationWiFiUDPModule::Init()
         delay(500);
     }
     Serial.print("Connected!");
-
+    esp_wifi_set_ps(WIFI_PS_NONE);
     #if USE_WIREGUARD
         configTime(0, 0, "pool.ntp.org", "time.nist.gov");
         time_t now = time(nullptr);
@@ -47,6 +47,7 @@ void CommunicationWiFiUDPModule::Init()
 
     udp.begin(localPort);
 }
+
 void CommunicationWiFiUDPModule::Loop()
 {
     rssi = WiFi.RSSI();
