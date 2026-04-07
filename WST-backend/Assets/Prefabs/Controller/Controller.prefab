@@ -102,6 +102,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3784a253-d368-4ab8-904a-282cda1f6bf2
+    m_ActionName: 'Player/LeftStick[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2b1c8a01-8a63-40bd-bc95-724c82db70ae
+    m_ActionName: 'Player/RightStick[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: 
@@ -119,5 +127,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34fb0aaf648fc1b47919d32c6e886556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
-  moveDirection: {x: 0, y: 0, z: 0}
+  leftStickInput: {fileID: -4897823517846803955, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+  rightStickInput: {fileID: 8821104933467640493, guid: 35845fe01580c41289b024647b1d1c53, type: 3}

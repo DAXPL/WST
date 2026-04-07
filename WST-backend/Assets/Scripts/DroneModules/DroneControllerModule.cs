@@ -9,6 +9,7 @@ namespace WST.Drone.Modules
         public void Init(DroneManager drone)
         {
             _drone = drone;
+            if(controller == null) controller = (Controller)FindFirstObjectByType(typeof(Controller), FindObjectsInactive.Exclude);
         }
 
         public void Loop()

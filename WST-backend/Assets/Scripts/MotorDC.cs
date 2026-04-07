@@ -11,7 +11,7 @@ public class MotorDC : MonoBehaviour, IPWMInput {
     }
 
     private void FixedUpdate() {
-        _rb.AddForce(transform.up * (_signal * force * Time.fixedDeltaTime));
+        _rb.AddForce(this.transform.up * (_signal * force * Time.fixedDeltaTime));
     }
     
     public void SetPWMSignal(int signal) {
