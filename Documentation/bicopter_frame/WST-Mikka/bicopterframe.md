@@ -9,33 +9,35 @@
     - [Pliki CAD](#pliki-cad)
     - [TODO:](#todo)
     - [Pliki images](#pliki-images)
-  - [1. FC\_holder](#1-fc_holder)
+  - [1. FC_holder](#1-fc_holder)
     - [Opis](#opis-1)
     - [Komponenty](#komponenty)
-  - [2. bat\_holder](#2-bat_holder)
+  - [2. bat_holder](#2-bat_holder)
     - [Opis](#opis-2)
     - [Komponenty](#komponenty-1)
-  - [3. free\_plate](#3-free_plate)
+  - [3. free_plate](#3-free_plate)
     - [Opis](#opis-3)
-  - [4. arm\_holder](#4-arm_holder)
+  - [4. arm_holder](#4-arm_holder)
     - [Opis](#opis-4)
     - [TODO:](#todo-1)
-  - [5. hc-sr04\_front\_holder](#5-hc-sr04_front_holder)
+  - [5. hc-sr04_front_holder/hc-sr04_back_holder](#5-hc-sr04_front_holderhc-sr04_back_holder)
     - [Opis](#opis-5)
-  - [6. hc-sr04\_side\_holder](#6-hc-sr04_side_holder)
+  - [6. hc-sr04_side_holder](#6-hc-sr04_side_holder)
     - [Opis](#opis-6)
-  - [7. arm](#7-arm)
+  - [7. hc-sr04_bottom_holder](#7-hc-sr04_bottom_holder)
     - [Opis](#opis-7)
-    - [Komponenty](#komponenty-2)
-  - [8. raspberry\_pi\_5](#8-raspberry_pi_5)
+  - [8. arm](#8-arm)
     - [Opis](#opis-8)
-  - [9. Seeed-Studio-XIAO-ESP32-C3](#9-seeed-studio-xiao-esp32-c3)
+    - [Komponenty](#komponenty-2)
+  - [9. raspberry_pi_5](#9-raspberry_pi_5)
     - [Opis](#opis-9)
-  - [10. hc sr04](#10-hc-sr04)
+  - [10. Seeed-Studio-XIAO-ESP32-C3](#10-seeed-studio-xiao-esp32-c3)
     - [Opis](#opis-10)
-    - [TODO:](#todo-2)
-  - [11. Rechargable Lithium Battery 18650](#11-rechargable-lithium-battery-18650)
+  - [11. hc sr04](#11-hc-sr04)
     - [Opis](#opis-11)
+    - [TODO:](#todo-2)
+  - [12. Rechargable Lithium Battery 18650](#12-rechargable-lithium-battery-18650)
+    - [Opis](#opis-12)
     - [TODO:](#todo-3)
 
 ## 0. Wprowadzenie
@@ -164,7 +166,7 @@ arm_holder to element który służy do montażu ramion drona za pomocą trzech 
 
 _Ostatnia zmiana: 14.02.2026_
 
-## 5. hc-sr04_front_holder
+## 5. hc-sr04_front_holder/hc-sr04_back_holder
 
 ### Opis
 
@@ -184,7 +186,17 @@ hc-sr04_side_holder to element trzymający boczne ultradźwiękowe czujniki zbli
 ![hc-sr04 side holder workspace solo screenshot](images/hc-sr04_side_holder-workspace-solo.png)
 _Ostatnia zmiana: 14.02.2026_
 
-## 7. arm
+## 7. hc-sr04_bottom_holder
+
+### Opis
+
+hc-sr04_bottom_holder to element trzymający dolne ultradźwiękowe czujniki zbliżeniowe. Minimalistyczna i super lekka konstrukcja.
+
+_Ostatnia zmiana: 04.04.2026_
+
+TODO: - [ ] zaktualizować zdjęcia w dokumentacji po dodaniu modelu
+
+## 8. arm
 
 ### Opis
 
@@ -192,7 +204,14 @@ Najsolidnijesza część całej konstrukcji, utrzymuje motor z servem nieruchomo
 
 ![arm workspace outline](images/arm-workspace-outline.png)
 ![arm workspace solo](images/arm-workspace-solo.png)
-_Ostatnia zmiana: 14.02.2024_
+_Ostatnia zmiana: 04.04.2024_<br>
+<i>
+Opis zmian:
+
+- pogrubienie ramienia
+- poprawnienie tolerancji otwóru serva</i>
+
+TODO: zaktualizować zdjęcia w dokumentacji po zmianach w modelu
 
 ### Komponenty
 
@@ -216,19 +235,19 @@ _Ostatnia zmiana: 14.02.2024_
 - #### SG90_Servo_Motor
   Model pobrany za darmo z [GrabCad](https://grabcad.com/library/sg90-servo-motor-module-for-arduino-1) autorstwa [Wonil Kim](https://grabcad.com/wonil.kim-1). Model jest używany tylko jako placeholder i doskonała referencja do rozstawu otworów montażowych.
 
-## 8. raspberry_pi_5
+## 9. raspberry_pi_5
 
 ### Opis
 
 Model pobrany za darmo z [GrabCad](https://grabcad.com/library/raspberry-pi-5-2) autorstwa [Mateusz Zelek](https://grabcad.com/mateusz.zelek-1). Model jest używany tylko jako placeholder i doskonała referencja do rozstawu otworów montażowych.
 
-## 9. Seeed-Studio-XIAO-ESP32-C3
+## 10. Seeed-Studio-XIAO-ESP32-C3
 
 ### Opis
 
 Model pobrany za darmo z [GrabCad](https://grabcad.com/library/seeed-studio-xiao-esp32-c3-1) autorstwa [Maurice Pannard](https://grabcad.com/maurice.pannard-1). Model jest używany tylko jako placeholder i doskonała referencja do rozstawu otworów montażowych.
 
-## 10. hc sr04
+## 11. hc sr04
 
 ### Opis
 
@@ -236,9 +255,9 @@ Model pobrany za darmo z [GrabCad](https://grabcad.com/library/hc-sr04-ultrasoni
 
 ### TODO:
 
-- [ ] dolny holder
+- [x] dolny holder
 
-## 11. Rechargable Lithium Battery 18650
+## 12. Rechargable Lithium Battery 18650
 
 ### Opis
 
