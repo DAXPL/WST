@@ -61,6 +61,16 @@ void CommunicationESPNowModule::OnDataReceived(const uint8_t *mac, const uint8_t
     }
     instance->lastDataTime = millis();
 }
+
+void CommunicationESPNowModule::SendData(DroneControlData* data)
+{
+    if(data == nullptr) return;
+    esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *)data, sizeof(DroneControlData));
+    if (result != ESP_OK) {
+        Serial.println("Error sending data via ESP-NOW");
+    }
+}
+
 void CommunicationESPNowModule::SendData(SensorsData* data)
 {
 
