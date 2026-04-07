@@ -24,13 +24,13 @@ private:
     double _pitchOutput;
     double _kpPitch = 1.5;
     double _kiPitch = 0.0;
-    double _kdPitch = 0.1;
+    double _kdPitch = 0.0;
 
     // ROLL
     double _rollSetpoint;
     double _rollInput;
     double _rollOutput;
-    double _kpRoll = 1.0; 
+    double _kpRoll = 1.5; 
     double _kiRoll = 0.0;
     double _kdRoll = 0.1;
     
@@ -43,11 +43,13 @@ private:
 public:
     BicopterMixer()
     {
-        _servoLeft = new ServoMotor(16); 
-        _servoRight = new ServoMotor(17);
+        //pin, center angle
+        _servoLeft = new ServoMotor(32,90); 
+        _servoRight = new ServoMotor(33,90);
 
-        _motorLeft = new ESCActuator(5);
-        _motorRight = new ESCActuator(18); 
+        //pin, minPulse, maxPulse
+        _motorLeft = new ESCActuator(25,700,1500);
+        _motorRight = new ESCActuator(26,700,1500); 
 
         _pitchSetpoint = 0;
         _pitchInput = 0;
@@ -67,12 +69,15 @@ public:
         if(_servoRight) _servoRight->Init();
         if(_motorLeft)  _motorLeft->Init();
         if(_motorRight) _motorRight->Init();
-        
+        delay(2000);
+        if(_motorLeft) _motorLeft->Set(0);
+        if(_motorRight) _motorRight->Set(0);
+
         if(_pitchPID)
         {
             _pitchPID->SetMode(AUTOMATIC);
             _pitchPID->SetSampleTime(20); 
-            _pitchPID->SetOutputLimits(-9000, 9000);
+            _pitchPID->SetOutputLimits(-500, 500);
         }
 
         if(_rollPID)
@@ -86,8 +91,8 @@ public:
     void Update(DroneControlData *input, SensorsData *sensors) override 
     {
         if(sensors == nullptr || input == nullptr) return;
-
-        // PITCH
+        
+        // PITCH - Serwa
         _pitchFilterState = (_pitchFilterState * (1.0 - _pitchFilterAlpha)) + ((double)(sensors->pitch) * _pitchFilterAlpha);
         _pitchInput = _pitchFilterState;
         _pitchSetpoint = input->pitch;
@@ -95,34 +100,33 @@ public:
         if (_pitchPID->Compute()) 
         {
             int16_t controlSignal = _pitchOutput;
-            if(_servoLeft) _servoLeft->Set(controlSignal);
-            if(_servoRight) _servoRight->Set(-controlSignal); 
+            
+            // Przywracamy środek wychylenia (1500 us)
+            int16_t servoLeftVal = 1500 + controlSignal;
+            int16_t servoRightVal = 1500 - controlSignal;
+
+            if(_servoLeft) _servoLeft->Set(servoLeftVal);
+            if(_servoRight) _servoRight->Set(servoRightVal); 
         }
 
-        // ROLL
+        // ROLL - Silniki
         _rollInput = (double)(sensors->roll);
         _rollSetpoint = (double)input->roll; 
         
         if(_rollPID->Compute())
         {
-            //int16_t baseThrottle = input->throttle;
-            int16_t baseThrottle = 500;
-            int16_t correction = _rollOutput;
+            int16_t mappedThrottle = map(input->throttle, -1000, 1000, 0, 1000);
 
-            int16_t motorLeftSpeed = baseThrottle + correction;
-            int16_t motorRightSpeed = baseThrottle - correction;
+            int16_t correction = _rollOutput;
+            int16_t motorLeftSpeed = mappedThrottle + correction;
+            int16_t motorRightSpeed = mappedThrottle - correction;
+            
             if(_motorLeft) _motorLeft->Set(motorLeftSpeed);
             if(_motorRight) _motorRight->Set(motorRightSpeed);
         }
     }
 
-    void StopAll() override
-    {
-        if(_servoLeft) _servoLeft->Set(0);
-        if(_servoRight) _servoRight->Set(0);
-        if(_motorLeft) _motorLeft->Set(0);
-        if(_motorRight) _motorRight->Set(0);
-    }
+    void StopAll(){};
 };
 
 #endif

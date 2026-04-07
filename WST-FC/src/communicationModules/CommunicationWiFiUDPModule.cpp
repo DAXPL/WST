@@ -1,5 +1,6 @@
 #include "communicationModules\CommunicationWiFiUDPModule.h"
 #include "Configuration.h"
+#include <esp_wifi.h> 
 
 CommunicationWiFiUDPModule::CommunicationWiFiUDPModule(DroneControlData *dataPtr, unsigned int port, DroneStatus *status)
 {
@@ -12,24 +13,41 @@ void CommunicationWiFiUDPModule::Init()
 {
     Serial.print("Connecting to WiFi");
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
+    delay(500);
     while (WiFi.status() != WL_CONNECTED)
     {
         Serial.print(".");
         delay(500);
     }
-    WiFi.setHostname("WST_DRONE");
-    // IPAddress ip(10,0,0,99);
-    // IPAddress gateway(10,0,0,1);
-    // IPAddress subnet(255,255,255,0);
-    // WiFi.config(ip, gateway, subnet);
-    //to do ustalić adresacje maliny wewn. dla dronów po wifi
-    //to do ustawić routingi pomiędzy tunelem a siecią lokalną
-    WiFi.enableLongRange(true);//sprawdzić z i bez
-    Serial.println("\nConnected!\nIP Address: " + WiFi.localIP());
-    Serial.println("MAC Address:\n" + WiFi.macAddress());
+    Serial.print("Connected!");
+    esp_wifi_set_ps(WIFI_PS_NONE);
+    #if USE_WIREGUARD
+        configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+        time_t now = time(nullptr);
+        while (now < 8 * 3600 * 2) 
+        {
+            delay(500);
+            Serial.print(".");
+            now = time(nullptr);
+        }
+        Serial.println("\nTime synchronized!");
+
+        IPAddress localIP;
+        localIP.fromString(WG_LOCAL_IP);
+
+        wg.begin(
+            localIP,
+            WG_PRIVATE_KEY,
+            WG_PEER_ADDRESS,
+            WG_PEER_PUBLIC_KEY,
+            WG_PEER_PORT
+        );
+        Serial.println("WireGuard initialized!");
+    #endif
+
     udp.begin(localPort);
 }
+
 void CommunicationWiFiUDPModule::Loop()
 {
     rssi = WiFi.RSSI();
@@ -59,6 +77,17 @@ void CommunicationWiFiUDPModule::Loop()
     {
         *droneStatus = WORKS;
     }
+
+    #if USE_WIREGUARD
+        if (remotePort != 0 && (millis() - lastKeepaliveTime > KEEPALIVE_INTERVAL))
+        {
+            udp.beginPacket(remoteIP, remotePort);
+            udp.write(&KEEPALIVE_BYTE, 1);
+            udp.endPacket();
+            
+            lastKeepaliveTime = millis();
+        }
+    #endif
 }
 
 void CommunicationWiFiUDPModule::SendData(SensorsData* data)
@@ -67,4 +96,7 @@ void CommunicationWiFiUDPModule::SendData(SensorsData* data)
     udp.beginPacket(remoteIP, remotePort);
     udp.write((const uint8_t*)data, sizeof(SensorsData));
     udp.endPacket();
+    #if USE_WIREGUARD
+        lastKeepaliveTime = millis();
+    #endif
 }

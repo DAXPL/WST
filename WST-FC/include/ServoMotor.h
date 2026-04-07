@@ -16,12 +16,12 @@ private:
     int16_t _maxDeflectionScaled; 
 
 public:
-    ServoMotor(int pin, int minPulse = 500, int maxPulse = 2400)
+    ServoMotor(int pin, int center = 90, int minPulse = 500, int maxPulse = 2400)
     {
         _pin = pin;
         _minPulse = minPulse;
         _maxPulse = maxPulse;
-        _centerAngle = 90; 
+        _centerAngle = center; 
         _maxDeflectionScaled = 9000; 
     }
 
@@ -30,14 +30,13 @@ public:
         _servo.setPeriodHertz(50);
         _servo.attach(_pin, _minPulse, _maxPulse);
         Serial.println(_pin);
-        Set(0);
+        Set(1500);
     }
 
     void Set(int16_t value) override
     {
-        int targetAngle = _centerAngle + (value / 100);
-        targetAngle = constrain(targetAngle, 0, 180);
-        _servo.write(targetAngle);
+        int pulse = constrain(value, _minPulse, _maxPulse);
+        _servo.writeMicroseconds(pulse);
     }
 
     void Loop() override {}
