@@ -8,5 +8,6 @@ public:
     virtual void Init();
     virtual void Loop();
     virtual void SendData(SensorsData* data);
+    virtual void SendData(DroneControlData* data);
 };
 #endif 
