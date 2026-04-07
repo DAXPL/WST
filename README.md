@@ -58,7 +58,7 @@ This project is big, it is complex, and it is—by any traditional standard—co
 * **inż. Krystian Olesiejko** – Naval Architect & 3D Printing Specialist. Hull designer and manufacturing lead.
 * **Mateusz Nawrot** – Network Specialist & C++ Programmer. Keeping the VPN tunnels open. Fiberglass enjoyer.
 * **inż. Miłosz Klim** – Project Leader, Unity Developer, C++ Developer. The one who asks "Why not?" when things start smoking.
-* **Wiktoria Bielecka** – UI/UX Designer & Aesthetic Overlord. She is the only person standing between us and a project that looks like a 1995 Linux terminal. Wiktoria spends her days bravely fighting the engineers' urge to use "default gray" and making sure that even if the vehicle is doing something "weird," it does so with a perfectly aligned and beautiful interface.
+* **Wiktoria Bielecka** – UI/UX Designer & Aesthetic Overlord. She is the only person standing between us and a project that looks like a 1995 Linux terminal.
 * **Google Gemini** – The ghost in the machine. Artificial intelligence keeping track of our genuine human stupidity.
 
 <p align="center">
