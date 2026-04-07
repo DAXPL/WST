@@ -13,7 +13,7 @@ WST was born from a simple, dangerous question: *What happens if we stop being s
 We are building a system that allows a neural network, trained inside a high-fidelity **Unity 6** simulation, to pilot a physical vehicle in the real world. Whether it’s a drone tethered by a kilometer-long fiber optic cable or a boat navigating via a VPN hosted on a **Raspberry Pi**, WST provides the tools to make it happen. You don't even need a fancy RC controller—if you have a smartphone and a dream, you're in.
 
 <p align="center">
-  <img src="Graphics/gunboat.webp" alt="WST Logo" width="400">
+  <img src="Documentation/Graphics/gunboat.webp" alt="WST Logo" width="400">
 </p>
 
 ## 🧠 Because We Can
@@ -62,11 +62,11 @@ This project is big, it is complex, and it is—by any traditional standard—co
 * **Google Gemini** – The ghost in the machine. Artificial intelligence keeping track of our genuine human stupidity.
 
 <p align="center">
-  <img src="Graphics/team.webp" alt="WST Logo" width="400">
+  <img src="Documentation/Graphics/team.webp" alt="WST Logo" width="400">
 </p>
 
 <p align="center">
-  <img src="Graphics/broken.webp" alt="WST Logo" width="400">
+  <img src="Documentation/Graphics/broken.webp" alt="WST Logo" width="400">
 </p>
 
 ### 🎖️ Special Thanks
