@@ -18,6 +18,12 @@ enum DroneStatus
     BROKEN
 };
 
+#if COMMUNICATION_METHOD == 3
+#define USE_PAD_XBOX
+//#define USE_PAD_PS4
+//#define USE_PAD_PS5
+#endif
+
 #define USE_WIREGUARD 1
 
 #if USE_WIREGUARD

@@ -9,6 +9,7 @@
 #include "communicationModules\CommunicationWiFiUDPModule.h"
 #include "communicationModules\CommunicationESPNowModule.h"
 #include "communicationModules\CommunicationSerialModule.h"
+#include "communicationModules\CommunicationGamepadModule.h"
 
 class CommunicationModule
 {
