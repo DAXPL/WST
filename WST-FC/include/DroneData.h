@@ -1,5 +1,6 @@
 #ifndef DRONEDATA_H
 #define DRONEDATA_H
+#include <stdint.h>
 #pragma pack(push, 1)
 struct DroneControlData {
     int16_t throttle;

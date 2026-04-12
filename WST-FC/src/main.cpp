@@ -51,9 +51,7 @@ void setup()
   #endif
   #ifdef VEHICLE_TYPE_AIRBOAT
     Serial.println("Configuring as AIRBOAT");
-    //sensorsModule.AddSensor(&adxlSensor);
     droneMixer = new BoatMixer(&motorL, &motorR);
-    modules.push_back(new CameraModule());
   #endif
 
   comms.Init();
