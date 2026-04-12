@@ -22,7 +22,7 @@ private:
     const unsigned long PING_INTERVAL {60};
 
     static void IRAM_ATTR ISR(void* arg);
-    void HandleInterrupt();
+    void IRAM_ATTR HandleInterrupt();
 
 public:
     HCSR04Sensor(int trig, int echo, int id);

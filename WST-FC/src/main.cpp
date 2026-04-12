@@ -14,16 +14,16 @@
 
 #ifdef VEHICLE_TYPE_AIRBOAT
     #include "AirBoatMixer.h"
-    //#include "sensors/AdxlSensor.h"
-    #include "modules/CameraModule.h"
-    //Esp wrom
+    #include "sensors/AdxlSensor.h"
     DCMotor motorL(16, 17, 4, 0); 
     DCMotor motorR(18, 19, 5, 1);
-    //AdxlSensor adxlSensor;
-    //esp cam
-    //DCMotor motorL(13, 14, 0); 
-    //DCMotor motorR(15, 2, 1);
-    
+#endif
+
+#ifdef VEHICLE_TYPE_TANK
+    #include "AirBoatMixer.h"
+    #include "modules/CameraModule.h"
+    DCMotor motorL(13, 14, 0); 
+    DCMotor motorR(15, 2, 1); 
 #endif
 
 DroneControlData droneControllData{};
@@ -51,6 +51,12 @@ void setup()
   #endif
   #ifdef VEHICLE_TYPE_AIRBOAT
     Serial.println("Configuring as AIRBOAT");
+    sensorsModule.AddSensor(&adxlSensor);
+    droneMixer = new BoatMixer(&motorL, &motorR);
+    modules.push_back(new CameraModule());
+  #endif
+  #ifdef VEHICLE_TYPE_TANK
+    Serial.println("Configuring as TANK");
     droneMixer = new BoatMixer(&motorL, &motorR);
   #endif
 
@@ -72,10 +78,10 @@ void loop()
     lastTelemetryTimestamp = millis();
     comms.SendData(&sensorsData);
   } 
-  if(droneMixer != nullptr) droneMixer->Update(&droneControllData, &sensorsData);
+
+  if(droneMixer != nullptr) 
+    droneMixer->Update(&droneControllData, &sensorsData);
 
   for (auto module : modules)
-  {
     module->Loop(&comms, &sensorsData);
-  }
 }
