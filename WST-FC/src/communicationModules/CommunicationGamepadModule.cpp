@@ -1,55 +1,48 @@
 #include "communicationModules/CommunicationGamepadModule.h"
+CommunicationGamepadModule* CommunicationGamepadModule::instance = nullptr;
+
+void CommunicationGamepadModule::onConnectedGamepad(GamepadPtr gp) {
+    if (instance != nullptr && instance->GetGamepad() == nullptr) {
+        Serial.printf("Gamepad connected: %s\n", gp->getModelName().c_str());
+        instance->SetGamepad(gp);
+    }
+}
+
+void CommunicationGamepadModule::onDisconnectedGamepad(GamepadPtr gp) {
+    if (instance != nullptr) {
+        Serial.println("Gamepad disconnected!");
+        instance->SetGamepad(nullptr);
+    }
+}
+
 CommunicationGamepadModule::CommunicationGamepadModule(DroneControlData *dataPtr, DroneStatus *status){
     sharedData = dataPtr;
     droneStatus = status;
+    instance = this;
 }
 void CommunicationGamepadModule::Init(){
-    #if defined(USE_PAD_XBOX)
-        xbox.begin();
-    #elif defined(USE_PAD_PS4)
-        PS4.begin(DRONE_MAC_ADDRESS);
-    #elif defined(USE_PAD_PS5)
-        ps5.begin(DRONE_MAC_ADDRESS);
-    #endif
+    Serial.println("Initializing Bluepad32...");
+    BP32.setup(&onConnectedGamepad, &onDisconnectedGamepad);
 }
 
 void CommunicationGamepadModule::Loop(){
-    bool isConnected = false;
+    BP32.update();
 
-    #if defined(USE_PAD_XBOX)
-        isConnected = xbox.isConnected();
-    #elif defined(USE_PAD_PS4)
-        isConnected = PS4.isConnected();
-    #elif defined(USE_PAD_PS5)
-        isConnected = ps5.isConnected();
-    #endif
+    if (myGamepad && myGamepad->isConnected()) {
 
-    if (!isConnected) {
-        return; 
+        const int inRange = 511;
+        const int outRange= 1000;
+       
+        sharedData->throttle =  map(myGamepad->axisY(),  -inRange, inRange, -outRange, outRange);
+        sharedData->yaw      =  map(myGamepad->axisX(),  -inRange, inRange, -outRange, outRange);
+        sharedData->pitch    =  map(myGamepad->axisRY(), -inRange, inRange, -outRange, outRange); 
+        sharedData->roll     =  map(myGamepad->axisRX(), -inRange, inRange, -outRange, outRange);
     }
-
-    #if defined(USE_PAD_XBOX)
-        XboxControlsState s;
-        xbox.read(&s);
-        sharedData->throttle = (int16_t)(s.leftStickY * 32767.0f);
-        sharedData->yaw      = (int16_t)(s.leftStickX * 32767.0f);
-        sharedData->pitch    = (int16_t)(s.rightStickY * 32767.0f);
-        sharedData->roll     = (int16_t)(s.rightStickX * 32767.0f);
-
-    #elif defined(USE_PAD_PS4)
-        sharedData->throttle = PS4.data.analog.stick.ly;
-        sharedData->yaw      = PS4.data.analog.stick.lx;
-        sharedData->pitch    = PS4.data.analog.stick.ry;
-        sharedData->roll     = PS4.data.analog.stick.rx;
-
-    #elif defined(USE_PAD_PS5)
-        sharedData->throttle = ps5.LStickY();
-        sharedData->yaw      = ps5.LStickX();
-        sharedData->pitch    = ps5.RStickY();
-        sharedData->roll     = ps5.RStickX();
-    #endif
-
 }
+
 void CommunicationGamepadModule::SendData(SensorsData* data){
 
+}
+void CommunicationGamepadModule::SetGamepad(GamepadPtr gp) { 
+    myGamepad = gp;
 }

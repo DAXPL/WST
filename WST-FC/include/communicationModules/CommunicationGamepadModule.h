@@ -4,31 +4,27 @@
 #include "DroneData.h"
 #include "ICommunicationInterface.h"
 #include "Configuration.h"
+#include <Bluepad32.h>
 
-#if defined(USE_PAD_XBOX)
-    #include <BLEGamepadClient.h>
-#elif defined(USE_PAD_PS4)
-    #include <PS4Controller.h>
-    #define DRONE_MAC_ADDRESS "1a:2b:3c:01:01:01" 
-#elif defined(USE_PAD_PS5)
-    #include <ps5Controller.h>
-    #define DRONE_MAC_ADDRESS "1a:2b:3c:01:01:01" 
-#endif
 
-class CommunicationGamepadModule : public ICommunicationInterface{
+class CommunicationGamepadModule : public ICommunicationInterface {
     private:
         DroneControlData *sharedData;
-        unsigned long lastUpdate{0};
         DroneStatus *droneStatus;
-
-        #if defined(USE_PAD_XBOX)
-            XboxController xbox;
-        #endif
+        GamepadPtr myGamepad = nullptr;
 
     public:
+        static CommunicationGamepadModule* instance;
+
         CommunicationGamepadModule(DroneControlData *dataPtr, DroneStatus *status);
+        
         void Init() override;
         void Loop() override;
         void SendData(SensorsData* data) override;
+        void SetGamepad(GamepadPtr gp);
+        GamepadPtr GetGamepad() { return myGamepad; }
+
+        static void onConnectedGamepad(GamepadPtr gp);
+        static void onDisconnectedGamepad(GamepadPtr gp);
 };
 #endif
