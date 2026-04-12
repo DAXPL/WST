@@ -58,7 +58,6 @@ void setup()
   #ifdef VEHICLE_TYPE_TANK
     Serial.println("Configuring as TANK");
     droneMixer = new BoatMixer(&motorL, &motorR);
-    modules.push_back(new CameraModule());
   #endif
 
   comms.Init();
