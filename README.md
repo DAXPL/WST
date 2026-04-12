@@ -13,7 +13,7 @@ WST was born from a simple, dangerous question: *What happens if we stop being s
 We are building a system that allows a neural network, trained inside a high-fidelity **Unity 6** simulation, to pilot a physical vehicle in the real world. Whether it’s a drone tethered by a kilometer-long fiber optic cable or a boat navigating via a VPN hosted on a **Raspberry Pi**, WST provides the tools to make it happen. You don't even need a fancy RC controller—if you have a smartphone and a dream, you're in.
 
 <p align="center">
-  <img src="Graphics/gunboat.webp" alt="WST Logo" width="400">
+  <img src="Documentation/Graphics/gunboat.webp" alt="WST Logo" width="400">
 </p>
 
 ## 🧠 Because We Can
@@ -58,15 +58,15 @@ This project is big, it is complex, and it is—by any traditional standard—co
 * **inż. Krystian Olesiejko** – Naval Architect & 3D Printing Specialist. Hull designer and manufacturing lead.
 * **Mateusz Nawrot** – Network Specialist & C++ Programmer. Keeping the VPN tunnels open. Fiberglass enjoyer.
 * **inż. Miłosz Klim** – Project Leader, Unity Developer, C++ Developer. The one who asks "Why not?" when things start smoking.
-* **Wiktoria Bielecka** – UI/UX Designer & Aesthetic Overlord. She is the only person standing between us and a project that looks like a 1995 Linux terminal. Wiktoria spends her days bravely fighting the engineers' urge to use "default gray" and making sure that even if the vehicle is doing something "weird," it does so with a perfectly aligned and beautiful interface.
+* **Wiktoria Bielecka** – UI/UX Designer & Aesthetic Overlord. She is the only person standing between us and a project that looks like a 1995 Linux terminal.
 * **Google Gemini** – The ghost in the machine. Artificial intelligence keeping track of our genuine human stupidity.
 
 <p align="center">
-  <img src="Graphics/team.webp" alt="WST Logo" width="400">
+  <img src="Documentation/Graphics/team.webp" alt="WST Logo" width="400">
 </p>
 
 <p align="center">
-  <img src="Graphics/broken.webp" alt="WST Logo" width="400">
+  <img src="Documentation/Graphics/broken.webp" alt="WST Logo" width="400">
 </p>
 
 ### 🎖️ Special Thanks
