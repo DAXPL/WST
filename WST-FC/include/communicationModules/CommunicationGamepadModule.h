@@ -1,6 +1,6 @@
 #ifndef COMMUNICATIONGAMEPADMODULE_H
 #define COMMUNICATIONGAMEPADMODULE_H
-
+#ifndef NOT_USE_BLUESTACK
 #include "DroneData.h"
 #include "ICommunicationInterface.h"
 #include "Configuration.h"
@@ -27,4 +27,5 @@ class CommunicationGamepadModule : public ICommunicationInterface {
         static void onConnectedGamepad(GamepadPtr gp);
         static void onDisconnectedGamepad(GamepadPtr gp);
 };
+#endif
 #endif

@@ -18,9 +18,11 @@ void CommunicationModule::Init()
     if(COMMUNICATION_METHOD == 2){
         communicationInterface = new CommunicationSerialModule(sharedData, droneStatus);
     }
-    if(COMMUNICATION_METHOD == 3){
-        communicationInterface = new CommunicationGamepadModule(sharedData, droneStatus);
-    }
+    #if (COMMUNICATION_METHOD == 3)
+        if(COMMUNICATION_METHOD == 3){
+            communicationInterface = new CommunicationGamepadModule(sharedData, droneStatus);
+        }
+    #endif
 
     if(communicationInterface == nullptr)
     {

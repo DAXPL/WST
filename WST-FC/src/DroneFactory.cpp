@@ -9,7 +9,6 @@
 #ifdef VEHICLE_TYPE_AIRBOAT
     #include "AirBoatMixer.h"
     #include "sensors/AdxlSensor.h"
-    #include "modules/CameraModule.h"
     DCMotor motorL(16, 17, 4, 0); 
     DCMotor motorR(18, 19, 5, 1);
     AdxlSensor adxlSensor;
@@ -18,8 +17,9 @@
 #ifdef VEHICLE_TYPE_TANK
     #include "AirBoatMixer.h"
     #include "modules/CameraModule.h"
+    #include "sensors/HCSR04Sensor.h"
     DCMotor motorL(13, 14, 0); 
-    DCMotor motorR(15, 2, 1); 
+    DCMotor motorR(15, 2, 1);
 #endif
 
 IMixer* DroneFactory::BuildVehicle(SensorsModule& sensorsModule, std::vector<IModule*>& modules)
@@ -36,12 +36,14 @@ IMixer* DroneFactory::BuildVehicle(SensorsModule& sensorsModule, std::vector<IMo
         Serial.println("Configuring as AIRBOAT");
         sensorsModule.AddSensor(&adxlSensor);
         droneMixer = new BoatMixer(&motorL, &motorR);
-        modules.push_back(new CameraModule());
     #endif
     
     #ifdef VEHICLE_TYPE_TANK
         Serial.println("Configuring as TANK");
+        Serial.end();//Not enough pins on esp cam 
         droneMixer = new BoatMixer(&motorL, &motorR);
+        modules.push_back(new CameraModule());
+        sensorsModule.AddSensor(new HCSR04Sensor(4,12,0));
     #endif
 
     return droneMixer;

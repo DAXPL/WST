@@ -9,7 +9,9 @@
 #include "communicationModules\CommunicationWiFiUDPModule.h"
 #include "communicationModules\CommunicationESPNowModule.h"
 #include "communicationModules\CommunicationSerialModule.h"
-#include "communicationModules\CommunicationGamepadModule.h"
+#if (COMMUNICATION_METHOD == 3)
+    #include "communicationModules\CommunicationGamepadModule.h"
+#endif
 
 class CommunicationModule
 {

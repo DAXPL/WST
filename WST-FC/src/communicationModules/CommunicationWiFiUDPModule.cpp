@@ -12,6 +12,7 @@ CommunicationWiFiUDPModule::CommunicationWiFiUDPModule(DroneControlData *dataPtr
 void CommunicationWiFiUDPModule::Init()
 {
     Serial.print("Connecting to WiFi");
+    WiFi.mode(WIFI_STA);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     delay(500);
     while (WiFi.status() != WL_CONNECTED)

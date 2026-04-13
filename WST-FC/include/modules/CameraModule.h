@@ -27,7 +27,7 @@
     #define HREF_GPIO_NUM     23
     #define PCLK_GPIO_NUM     22
     #define XCLK_FREQ_HZ      20000000
-    #define JPEG_QUALITY      25
+    #define JPEG_QUALITY      45
     #define FB_COUNT          2
     #define PART_BOUNDARY "123456789000000000000987654321"
 
