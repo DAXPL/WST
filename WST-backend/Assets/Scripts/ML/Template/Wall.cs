@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
 
-public class Wall : MonoBehaviour {
-    
+namespace ML.Template {
+    public class Wall : MonoBehaviour { }
 }

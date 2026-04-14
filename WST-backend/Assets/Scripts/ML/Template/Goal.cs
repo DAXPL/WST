@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
 
-public class Goal : MonoBehaviour {
-    
+namespace ML.Template {
+    public class Goal : MonoBehaviour { }
 }
