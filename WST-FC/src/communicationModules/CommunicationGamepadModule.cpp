@@ -1,5 +1,5 @@
 #include "communicationModules/CommunicationGamepadModule.h"
-#ifndef NOT_USE_BLUESTACK
+#ifdef USE_BLUEPAD32
 CommunicationGamepadModule* CommunicationGamepadModule::instance = nullptr;
 
 void CommunicationGamepadModule::onConnectedGamepad(GamepadPtr gp) {

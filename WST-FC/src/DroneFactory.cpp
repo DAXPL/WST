@@ -43,7 +43,7 @@ IMixer* DroneFactory::BuildVehicle(SensorsModule& sensorsModule, std::vector<IMo
         Serial.end();//Not enough pins on esp cam 
         droneMixer = new BoatMixer(&motorL, &motorR);
         modules.push_back(new CameraModule());
-        sensorsModule.AddSensor(new HCSR04Sensor(4,12,0));
+        sensorsModule.AddSensor(new HCSR04Sensor(12,16,0));
     #endif
 
     return droneMixer;

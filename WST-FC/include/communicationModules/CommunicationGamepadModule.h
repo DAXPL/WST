@@ -1,6 +1,6 @@
 #ifndef COMMUNICATIONGAMEPADMODULE_H
 #define COMMUNICATIONGAMEPADMODULE_H
-#ifndef NOT_USE_BLUESTACK
+#ifdef USE_BLUEPAD32
 #include "DroneData.h"
 #include "ICommunicationInterface.h"
 #include "Configuration.h"
