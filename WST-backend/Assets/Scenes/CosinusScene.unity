@@ -281,7 +281,7 @@ Transform:
   m_GameObject: {fileID: 126263632}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -383,7 +383,7 @@ Transform:
   m_GameObject: {fileID: 245508943}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -408,19 +408,11 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 10000
   moveSpeed: 5
-  rotateSpeed: 1.1
+  rotateSpeed: 20
   layerMask:
     serializedVersion: 2
     m_Bits: 256
   carWidth: 1.2
-  goalPositions:
-  - {x: -34.66, y: -0.3, z: -2.61}
-  - {x: -34.66, y: -0.3, z: 14.5}
-  - {x: -16.7, y: -0.3, z: 14.5}
-  - {x: -0.7, y: -0.3, z: 14.5}
-  - {x: -0.7, y: -0.3, z: 29.3}
-  - {x: -17.7, y: -0.3, z: 29.3}
-  - {x: -34.9, y: -0.3, z: 29.3}
 --- !u!114 &245508946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,12 +441,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 15
+    VectorObservationSize: 11
     NumStackedVectorObservations: 1
     m_ActionSpec:
-      m_NumContinuousActions: 2
+      m_NumContinuousActions: 1
       BranchSizes: 
-    VectorActionSize: 02000000
+    VectorActionSize: 01000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
@@ -477,7 +469,7 @@ Rigidbody:
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 1.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -561,7 +553,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   carWidth: 0
-  goalPositions: []
 --- !u!114 &386892298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2920,7 +2911,7 @@ Transform:
   m_GameObject: {fileID: 1616509713}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12264883, y: 0, z: 0, w: 0.9924502}
-  m_LocalPosition: {x: 0, y: 4.53, z: -14.23}
+  m_LocalPosition: {x: 0, y: 7.9, z: -27.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4144,7 +4135,7 @@ Transform:
   m_GameObject: {fileID: 2058221294}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -206, y: -1, z: -236}
+  m_LocalPosition: {x: -206, y: 0, z: -236}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

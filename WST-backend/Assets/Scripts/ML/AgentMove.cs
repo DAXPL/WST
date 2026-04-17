@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using ML.Template;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -8,37 +6,38 @@ using UnityEngine;
 
 namespace MLAgent.Car {
     public class AgentMove : Agent {
-        [SerializeField] private float moveSpeed = 1;
-        [SerializeField] private float rotateSpeed = 2;
-        //[SerializeField] private Transform goalTransform;
+        [SerializeField] private float moveSpeed = 5;
+        [SerializeField] private float rotateSpeed = 7;
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private float carWidth;
-        //[SerializeField] private int maxSteps = 5000;
-        [SerializeField] private Vector3[] goalPositions;
-        private Vector3 _agentLeftCorner;
-        private Vector3 _agentRightCorner;
         private Rigidbody rb;
-        //private int _goalPositionsIndex = 0;
         private Quaternion startRotation;
         private Vector3 startPosition;
-        Vector3 lastPosition;
-        float totalDistance = 0f;
-        
+        private Vector3 lastPosition;
+        private bool justReset = false;
+
         private void Start() {
             rb = GetComponent<Rigidbody>();
-            
+
             startRotation = transform.rotation;
             startPosition = transform.position;
             lastPosition = transform.position;
             StartCoroutine(CheckLastPosition());
         }
 
+        private void FixedUpdate() {
+            rb.linearVelocity = transform.forward * moveSpeed;
+        }
+
         public override void OnEpisodeBegin() {
-            totalDistance = 0f;
             transform.localPosition = startPosition;
             transform.rotation = startRotation;
+
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+
+            lastPosition = transform.position;
+            justReset = true;
         }
 
         public override void CollectObservations(VectorSensor sensor) {
@@ -52,7 +51,8 @@ namespace MLAgent.Car {
                 Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
                 if (Physics.Raycast(transform.position, direction, out RaycastHit hit, 20f, layerMask)) {
                     sensor.AddObservation(hit.distance / 20f);
-                } else {
+                }
+                else {
                     sensor.AddObservation(1f);
                 }
             }
@@ -60,64 +60,47 @@ namespace MLAgent.Car {
 
         public override void OnActionReceived(ActionBuffers actions) {
             float rotate = actions.ContinuousActions[0];
-            float move = actions.ContinuousActions[1];
+   
+            // Differential wheel forces for turning
+            float leftWheelForce = rotate * rotateSpeed;
+            float rightWheelForce = -rotate * rotateSpeed;
 
-            // Penalty for going backward
-            if (move < 0) {
-                AddReward(-1f);
-                EndEpisode();
-            }
-
-            if (Mathf.Abs(rb.linearVelocity.magnitude) > 0.5f) {
-                AddReward(0.001f);
-            }
-            else {
-                AddReward(-0.0001f);
-            }
-
-            // Calculate left and right wheel forces
-            float leftWheelForce = move + (rotate * rotateSpeed);
-            float rightWheelForce = move - (rotate * rotateSpeed);
-
-            // Define wheel positions
             Vector3 leftWheelPos = transform.position + (-transform.right * carWidth);
             Vector3 rightWheelPos = transform.position + (transform.right * carWidth);
 
-            // Apply forces at wheel positions
-            rb.AddForceAtPosition(transform.forward * leftWheelForce * moveSpeed, leftWheelPos);
-            rb.AddForceAtPosition(transform.forward * rightWheelForce * moveSpeed, rightWheelPos);
+            rb.AddForceAtPosition(transform.forward * leftWheelForce, leftWheelPos);
+            rb.AddForceAtPosition(transform.forward * rightWheelForce, rightWheelPos);
         }
+
 
         private IEnumerator CheckLastPosition() {
             while (true) {
                 lastPosition = transform.position;
+                Vector3 lastForward = transform.forward;
+
                 yield return new WaitForSeconds(0.5f);
-                float distancedMoved = Vector3.Distance(lastPosition, transform.position);
-                // Always reward distance traveled
-                AddReward(distancedMoved * 0.5f);
-        
-                // Penalty if stuck/not moving enough
-                if (distancedMoved < 0.5f) {
-                    AddReward(-0.3f);
+
+                // skip this cycle completely if the episode just ended
+                if (justReset) {
+                    justReset = false;
+                    continue;
                 }
-                
-                // if (distancedMoved > 2f) {
-                //      AddReward(1 * distancedMoved);
-                // } else {
-                //     // if (distancedMoved <= 0) {
-                //     //     distancedMoved = 0.00001f;
-                //     // }
-                //     //
-                //     // AddReward(-0.1f / distancedMoved);
-                //     AddReward(-0.1f);
-                // }
+
+                float distancedMoved = Vector3.Distance(lastPosition, transform.position);
+                float angle = Vector3.SignedAngle(lastForward, transform.forward, Vector3.up);
+
+                AddReward(distancedMoved * 0.5f);
+
+                if (Mathf.Abs(angle) > 50) {
+                    AddReward(-1f * distancedMoved);
+                    EndEpisode();
+                }
             }
         }
 
         public override void Heuristic(in ActionBuffers actionsOut) {
             ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
             continuousActions[0] = Input.GetAxisRaw("Horizontal");
-            continuousActions[1] = Input.GetAxisRaw("Vertical");
         }
 
         private void OnCollisionEnter(Collision other) {
