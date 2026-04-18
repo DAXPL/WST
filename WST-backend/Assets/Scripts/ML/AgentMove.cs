@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace MLAgent.Car {
     public class AgentMove : Agent {
-        [SerializeField] private float moveSpeed = 5;
+        [SerializeField] private Vector2 moveSpeedRange;
         [SerializeField] private float rotateSpeed = 7;
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private float carWidth;
@@ -15,6 +15,8 @@ namespace MLAgent.Car {
         private Vector3 startPosition;
         private Vector3 lastPosition;
         private bool justReset = false;
+        private float maxYawRate;
+        private float moveSpeed;
 
         private void Start() {
             rb = GetComponent<Rigidbody>();
@@ -37,6 +39,9 @@ namespace MLAgent.Car {
             rb.angularVelocity = Vector3.zero;
 
             lastPosition = transform.position;
+            
+            moveSpeed = Random.Range(moveSpeedRange.x, moveSpeedRange.y);
+            maxYawRate = moveSpeed * 0.2f;
             justReset = true;
         }
 
@@ -60,7 +65,7 @@ namespace MLAgent.Car {
 
         public override void OnActionReceived(ActionBuffers actions) {
             float rotate = actions.ContinuousActions[0];
-   
+
             // Differential wheel forces for turning
             float leftWheelForce = rotate * rotateSpeed;
             float rightWheelForce = -rotate * rotateSpeed;
@@ -86,15 +91,21 @@ namespace MLAgent.Car {
                     continue;
                 }
 
+                float yawRate = Mathf.Abs(rb.angularVelocity.y);
                 float distancedMoved = Vector3.Distance(lastPosition, transform.position);
-                float angle = Vector3.SignedAngle(lastForward, transform.forward, Vector3.up);
+                // float angle = Vector3.SignedAngle(lastForward, transform.forward, Vector3.up);
 
                 AddReward(distancedMoved * 0.5f);
 
-                if (Mathf.Abs(angle) > 50) {
+                if (yawRate > maxYawRate) {
                     AddReward(-1f * distancedMoved);
                     EndEpisode();
                 }
+
+                // if (Mathf.Abs(angle) > 50) {
+                //     AddReward(-1f * distancedMoved);
+                //     EndEpisode();
+                // }
             }
         }
 

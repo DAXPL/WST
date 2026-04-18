@@ -407,7 +407,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 10000
-  moveSpeed: 5
+  moveSpeedRange: {x: 20, y: 50}
   rotateSpeed: 20
   layerMask:
     serializedVersion: 2
@@ -547,7 +547,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 1000
-  moveSpeed: 10
+  moveSpeedRange: {x: 0, y: 0}
   rotateSpeed: 2
   layerMask:
     serializedVersion: 2
