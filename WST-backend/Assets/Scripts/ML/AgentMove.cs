@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -6,10 +7,21 @@ using UnityEngine;
 
 namespace MLAgent.Car {
     public class AgentMove : Agent {
+        [Header("Agent Settings")]
         [SerializeField] private Vector2 moveSpeedRange;
         [SerializeField] private float rotateSpeed = 7;
+        [SerializeField] private Vector2 agentSpawnAreaXRange;
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private float carWidth;
+        
+        [Header("Map Generation")]
+        [SerializeField] private byte obstaclesAmount; 
+        [SerializeField] private Transform mapParent;
+        [SerializeField] private GameObject obstaclePrefab;
+        [SerializeField] private Vector2 obstacleSpawnAreaMin; // Min X and Z coordinates
+        [SerializeField] private Vector2 obstacleSpawnAreaMax; // Max X and Z coordinates
+        [SerializeField] private float obstacleYPosition; 
+        
         private Rigidbody rb;
         private Quaternion startRotation;
         private Vector3 startPosition;
@@ -17,10 +29,12 @@ namespace MLAgent.Car {
         private bool justReset = false;
         private float maxYawRate;
         private float moveSpeed;
+        private List<GameObject> obstaclePool = new List<GameObject>();
 
         private void Start() {
             rb = GetComponent<Rigidbody>();
 
+            CreatePrefabsPull();
             startRotation = transform.rotation;
             startPosition = transform.position;
             lastPosition = transform.position;
@@ -32,11 +46,12 @@ namespace MLAgent.Car {
         }
 
         public override void OnEpisodeBegin() {
-            transform.localPosition = startPosition;
+            transform.localPosition = RandomizePlayerXPosition();
             transform.rotation = startRotation;
-
+            
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+            RandomizeObstaclesPosition();
 
             lastPosition = transform.position;
             
@@ -77,7 +92,53 @@ namespace MLAgent.Car {
             rb.AddForceAtPosition(transform.forward * rightWheelForce, rightWheelPos);
         }
 
+        public override void Heuristic(in ActionBuffers actionsOut) {
+            ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+            continuousActions[0] = Input.GetAxisRaw("Horizontal");
+        }
 
+        private void OnCollisionEnter(Collision other) {
+            if (other.gameObject.TryGetComponent(out Obstacle obstacle)) {
+                AddReward(-20f);
+                EndEpisode();
+            }
+        }
+
+        private void CreatePrefabsPull() {
+            if (obstaclePrefab == null || obstaclesAmount == 0)
+                return;
+
+            for (int i = 0; i < obstaclesAmount; i++) {
+                GameObject obstacle = Instantiate(
+                    obstaclePrefab,
+                    Vector3.one * -10,
+                    Quaternion.identity,
+                    mapParent
+                );
+                obstaclePool.Add(obstacle);
+            }
+        }
+
+        private Vector3 RandomizePlayerXPosition() {
+            float randomX = Random.Range(agentSpawnAreaXRange.x, agentSpawnAreaXRange.y);
+            return new(randomX, startPosition.y, startPosition.z);
+        }
+        
+        private void RandomizeObstaclesPosition() {
+            if (obstaclePool.Count == 0) 
+                CreatePrefabsPull();
+    
+            for (int i = 0; i < obstaclePool.Count; i++) {
+                float randomX = Random.Range(obstacleSpawnAreaMin.x, obstacleSpawnAreaMax.x);
+                float randomZ = Random.Range(obstacleSpawnAreaMin.y, obstacleSpawnAreaMax.y);
+
+                if (obstaclePool[i] == null) 
+                    return;
+                
+                obstaclePool[i].transform.position = new Vector3(randomX, obstacleYPosition, randomZ);
+            }
+        }
+        
         private IEnumerator CheckLastPosition() {
             while (true) {
                 lastPosition = transform.position;
@@ -106,18 +167,6 @@ namespace MLAgent.Car {
                 //     AddReward(-1f * distancedMoved);
                 //     EndEpisode();
                 // }
-            }
-        }
-
-        public override void Heuristic(in ActionBuffers actionsOut) {
-            ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
-            continuousActions[0] = Input.GetAxisRaw("Horizontal");
-        }
-
-        private void OnCollisionEnter(Collision other) {
-            if (other.gameObject.TryGetComponent(out Obstacle obstacle)) {
-                AddReward(-20f);
-                EndEpisode();
             }
         }
     }
