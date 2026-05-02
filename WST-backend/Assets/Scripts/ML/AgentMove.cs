@@ -4,15 +4,18 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
+using WST.Drone;
+using WST.Drone.Modules;
 
 namespace MLAgent.Car {
-    public class AgentMove : Agent {
+    public class AgentMove : Agent, IDroneModule {
         [Header("Agent Settings")]
         [SerializeField] private Vector2 moveSpeedRange;
         [SerializeField] private float rotateSpeed = 7;
         [SerializeField] private Vector2 agentSpawnAreaXRange;
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private float carWidth;
+        
         
         [Header("Map Generation")]
         [SerializeField] private byte obstaclesAmount; 
@@ -22,6 +25,7 @@ namespace MLAgent.Car {
         [SerializeField] private Vector2 obstacleSpawnAreaMax; // Max X and Z coordinates
         [SerializeField] private float obstacleYPosition; 
         
+        private DroneManager _droneManager;
         private Rigidbody rb;
         private Quaternion startRotation;
         private Vector3 startPosition;
@@ -40,6 +44,12 @@ namespace MLAgent.Car {
             lastPosition = transform.position;
             StartCoroutine(CheckLastPosition());
         }
+        
+        public void Init(DroneManager drone) {
+            _droneManager = drone;
+        }
+
+        public void Loop() { }
 
         private void FixedUpdate() {
             rb.linearVelocity = transform.forward * moveSpeed;
@@ -61,20 +71,13 @@ namespace MLAgent.Car {
         }
 
         public override void CollectObservations(VectorSensor sensor) {
-            sensor.AddObservation(transform.position);
-            sensor.AddObservation(rb.linearVelocity);
-            sensor.AddObservation(rb.angularVelocity);
-
+            sensor.AddObservation(_droneManager.sensorsData.linearAccelX / 10f);
+            sensor.AddObservation(_droneManager.sensorsData.linearAccelY / 10f);
+            sensor.AddObservation(_droneManager.sensorsData.linearAccelZ / 10f);
+            
             // Raycast observations 
-            for (int i = -1; i <= 2; i += 2) {
-                float angle = i * 15f;
-                Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
-                if (Physics.Raycast(transform.position, direction, out RaycastHit hit, 20f, layerMask)) {
-                    sensor.AddObservation(hit.distance / 20f);
-                }
-                else {
-                    sensor.AddObservation(1f);
-                }
+            for (int i = 0; i < 2; i++) {
+                sensor.AddObservation(_droneManager.sensorsData.distanceSensors[i]);
             }
         }
 
