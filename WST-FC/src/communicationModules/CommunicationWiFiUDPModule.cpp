@@ -12,6 +12,7 @@ CommunicationWiFiUDPModule::CommunicationWiFiUDPModule(DroneControlData *dataPtr
 void CommunicationWiFiUDPModule::Init()
 {
     Serial.print("Connecting to WiFi");
+    WiFi.mode(WIFI_STA);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     delay(500);
     while (WiFi.status() != WL_CONNECTED)
@@ -57,15 +58,8 @@ void CommunicationWiFiUDPModule::Loop()
 
     if (packetSize)
     {
-        int len = udp.read(packetBuffer, 255);
+        ParseIncomingBytes((uint8_t*)packetBuffer, packetSize);
 
-        if (len != sizeof(DroneControlData))
-        {
-            Serial.printf("Error: invalid packet");
-            return;
-        }
-        memcpy(sharedData, packetBuffer, sizeof(DroneControlData));
-        lastUpdate = millis();
         remoteIP = udp.remoteIP();
         remotePort = udp.remotePort();
     }

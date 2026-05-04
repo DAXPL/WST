@@ -1,15 +1,16 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#define VEHICLE_TYPE_AIRBOAT
+#define VEHICLE_TYPE_TANK
 
-#define WIFI_SSID "AutisticDrones"
-#define WIFI_PASSWORD "Autyzm2137"
-#define UDP_CONTROLL_PORT 4210
 #define MAX_ROGUE_TIME 1000
 #define MIN_RSSI -80
-#define COMMUNICATION_METHOD 3
 #define TELEMETRY_TIME 1000
+
+#define USE_WIFI_UDP
+//#define USE_ESP_NOW
+#define USE_SERIAL
+//#define USE_GAMEPAD
 
 enum DroneStatus
 {
@@ -26,6 +27,12 @@ enum DroneStatus
     #define WG_PEER_ADDRESS "198.51.100.1"
     #define WG_PEER_PORT 51820
     #define WG_PEER_PUBLIC_KEY "KLUCZ_PUBLICZNY_SERWERA="
+#endif
+
+#if defined(USE_WIFI_UDP) || defined(USE_ESP_NOW)
+    #define WIFI_SSID "HPLOVER"
+    #define WIFI_PASSWORD "Autyzm2137!"
+    #define UDP_CONTROLL_PORT 4210
 #endif
 
 #endif

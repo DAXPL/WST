@@ -1,4 +1,5 @@
 #include "communicationModules/CommunicationGamepadModule.h"
+#ifdef USE_BLUEPAD32
 CommunicationGamepadModule* CommunicationGamepadModule::instance = nullptr;
 
 void CommunicationGamepadModule::onConnectedGamepad(GamepadPtr gp) {
@@ -46,3 +47,4 @@ void CommunicationGamepadModule::SendData(SensorsData* data){
 void CommunicationGamepadModule::SetGamepad(GamepadPtr gp) { 
     myGamepad = gp;
 }
+#endif

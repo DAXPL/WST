@@ -11,15 +11,12 @@
 #endif
 class CommunicationWiFiUDPModule : public ICommunicationInterface{
     private:
-    DroneControlData *sharedData;
     WiFiUDP udp;
     unsigned int localPort{0};
     char packetBuffer[255];
 
-    unsigned long lastUpdate{0};
     int8_t rssi{0};
     wl_status_t connectionStatus{WL_IDLE_STATUS};
-    DroneStatus *droneStatus;
 
     IPAddress remoteIP;
     unsigned int remotePort {0};

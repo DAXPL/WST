@@ -28,13 +28,13 @@ void CameraModule::Init()
     config.pin_reset = RESET_GPIO_NUM;
     config.xclk_freq_hz = XCLK_FREQ_HZ;
     config.pixel_format = PIXFORMAT_JPEG; 
-    config.frame_size = FRAMESIZE_HVGA;
+    config.frame_size = FRAMESIZE_QVGA;
     config.jpeg_quality = JPEG_QUALITY; 
     config.fb_count = FB_COUNT;
     config.grab_mode = CAMERA_GRAB_LATEST;
     
-    esp_camera_init(&config);
-    startCameraServer();
+    esp_err_t err = esp_camera_init(&config);
+    if (err == ESP_OK) startCameraServer();
 }
 
 void CameraModule::Loop(CommunicationModule* interface, SensorsData *data){}
@@ -46,7 +46,7 @@ esp_err_t CameraModule::stream_handler(httpd_req_t *req)
     char part_buf[64];
 
     TickType_t xLastWakeTime = xTaskGetTickCount();
-    const TickType_t xFrequency = pdMS_TO_TICKS(33);
+    const TickType_t xFrequency = pdMS_TO_TICKS(66);
 
     res = httpd_resp_set_type(req, _STREAM_CONTENT_TYPE);
 

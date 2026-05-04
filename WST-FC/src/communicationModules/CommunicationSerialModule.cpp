@@ -8,20 +8,18 @@ CommunicationSerialModule::CommunicationSerialModule(DroneControlData *dataPtr, 
 }
 void CommunicationSerialModule::Init()
 {
-
+    
 }
 void CommunicationSerialModule::Loop()
 {
-    if (sharedData == nullptr) return;
-    if (Serial.available() < sizeof(DroneControlData) + 2) return;
-    if (Serial.read() != HEADER_BYTE_1) return;
-    if (Serial.read() != HEADER_BYTE_2) return;
-
-    Serial.readBytes(inputBuffer, sizeof(DroneControlData));
-    memcpy(sharedData, inputBuffer, sizeof(DroneControlData));
-    lastUpdate = millis();
+    int bytesAvailable = Serial.available();
     
-    
+    if (bytesAvailable > 0)
+    {
+        size_t bytesToRead = min(bytesAvailable, (int)sizeof(inputBuffer));
+        size_t bytesRead = Serial.readBytes(inputBuffer, bytesToRead);
+        ParseIncomingBytes((uint8_t*)inputBuffer, bytesRead);
+    }
 
     if ((millis() - lastUpdate) > MAX_ROGUE_TIME) 
     {

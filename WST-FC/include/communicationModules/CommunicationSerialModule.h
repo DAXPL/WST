@@ -8,14 +8,9 @@
 
 class CommunicationSerialModule : public ICommunicationInterface{
     private:
-        DroneControlData *sharedData;
-        unsigned long lastUpdate{0};
-        DroneStatus *droneStatus;
         long lastDataTime = 0;
-        uint8_t inputBuffer[sizeof(DroneControlData)];
+        uint8_t inputBuffer[128];
 
-        const uint8_t HEADER_BYTE_1 = 0x44; // 'D'
-        const uint8_t HEADER_BYTE_2 = 0x43; // 'C'
     public:
     CommunicationSerialModule(DroneControlData *dataPtr, DroneStatus *status);
     void Init() override;
