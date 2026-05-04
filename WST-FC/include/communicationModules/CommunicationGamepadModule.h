@@ -9,8 +9,6 @@
 
 class CommunicationGamepadModule : public ICommunicationInterface {
     private:
-        DroneControlData *sharedData;
-        DroneStatus *droneStatus;
         GamepadPtr myGamepad = nullptr;
 
     public:

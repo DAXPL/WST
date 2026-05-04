@@ -9,36 +9,40 @@ CommunicationModule::CommunicationModule(DroneControlData *dataPtr, DroneStatus 
 
 void CommunicationModule::Init()
 {
-    if(COMMUNICATION_METHOD == 0){
-        communicationInterface = new CommunicationWiFiUDPModule(sharedData, UDP_CONTROLL_PORT, droneStatus);
-    }
-    if(COMMUNICATION_METHOD == 1){
-        communicationInterface = new CommunicationESPNowModule(sharedData, droneStatus);
-    }
-    if(COMMUNICATION_METHOD == 2){
-        communicationInterface = new CommunicationSerialModule(sharedData, droneStatus);
-    }
-    #if (COMMUNICATION_METHOD == 3)
-        if(COMMUNICATION_METHOD == 3){
-            communicationInterface = new CommunicationGamepadModule(sharedData, droneStatus);
-        }
+    #ifdef USE_WIFI_UDP
+        communicationInterfaces.push_back(new CommunicationWiFiUDPModule(sharedData, UDP_CONTROLL_PORT, droneStatus));
+    #endif
+    
+    #ifdef USE_ESP_NOW
+        communicationInterfaces.push_back( new CommunicationESPNowModule(sharedData, droneStatus));
     #endif
 
-    if(communicationInterface == nullptr)
+    #ifdef USE_SERIAL
+        communicationInterfaces.push_back(new CommunicationSerialModule(sharedData, droneStatus));
+    #endif
+
+    #ifdef USE_GAMEPAD
+        communicationInterfaces.push_back(new CommunicationGamepadModule(sharedData, droneStatus));
+    #endif
+
+    for(auto interface : communicationInterfaces) 
     {
-        //Critical error!!!
-    }else{
-        communicationInterface->Init();
+        interface->Init();
     }
+
 }
 
 void CommunicationModule::Loop()
 {
-    if(communicationInterface == nullptr) return;
-    communicationInterface -> Loop();
+    for(auto interface : communicationInterfaces) 
+    {
+        interface->Loop();
+    };
 }
 void CommunicationModule::SendData(SensorsData* data)
 {
-    if(communicationInterface == nullptr) return;
-    communicationInterface->SendData(data);
+    for(auto interface : communicationInterfaces) 
+    {
+        interface->SendData(data);
+    };
 }

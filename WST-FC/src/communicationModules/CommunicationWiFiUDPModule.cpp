@@ -58,15 +58,8 @@ void CommunicationWiFiUDPModule::Loop()
 
     if (packetSize)
     {
-        int len = udp.read(packetBuffer, 255);
+        ParseIncomingBytes((uint8_t*)packetBuffer, packetSize);
 
-        if (len != sizeof(DroneControlData))
-        {
-            Serial.printf("Error: invalid packet");
-            return;
-        }
-        memcpy(sharedData, packetBuffer, sizeof(DroneControlData));
-        lastUpdate = millis();
         remoteIP = udp.remoteIP();
         remotePort = udp.remotePort();
     }

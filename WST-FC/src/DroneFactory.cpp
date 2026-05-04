@@ -40,10 +40,10 @@ IMixer* DroneFactory::BuildVehicle(SensorsModule& sensorsModule, std::vector<IMo
     
     #ifdef VEHICLE_TYPE_TANK
         Serial.println("Configuring as TANK");
-        Serial.end();//Not enough pins on esp cam 
+        //Serial.end();//Not enough pins on esp cam 
         droneMixer = new BoatMixer(&motorL, &motorR);
-        modules.push_back(new CameraModule());
-        sensorsModule.AddSensor(new HCSR04Sensor(12,16,0));
+        //modules.push_back(new CameraModule());
+        //sensorsModule.AddSensor(new HCSR04Sensor(12,16,0));
     #endif
 
     return droneMixer;

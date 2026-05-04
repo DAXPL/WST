@@ -17,7 +17,7 @@ class CommunicationModule
 {
 private:
     DroneControlData *sharedData;
-    ICommunicationInterface *communicationInterface;
+    std::vector<ICommunicationInterface*> communicationInterfaces;
     wl_status_t connectionStatus{WL_IDLE_STATUS};
     DroneStatus *droneStatus;
 

@@ -25,14 +25,25 @@ unsigned long lastTelemetryTimestamp {0};
 void setup()
 {
   Serial.begin(115200);
-  
+  Serial.println("Starting");
+  Serial.flush();
   comms.Init();
+  Serial.println("Comms initiated");
+  Serial.flush();
   sensorsModule.Init();
+  Serial.println("Sensors initiated");
+  Serial.flush();
   droneMixer = DroneFactory::BuildVehicle(sensorsModule, modules);
   if(droneMixer != nullptr) 
     droneMixer->Init();
+  Serial.println("Mixer initiated");
+  Serial.flush();
   for (auto module : modules) 
     module->Init();
+  Serial.println("Modules initiated");
+  Serial.flush();
+  Serial.println("Ok");
+  Serial.flush();
 }
 
 void loop()
