@@ -71,9 +71,9 @@ namespace MLAgent.Car {
         }
 
         public override void CollectObservations(VectorSensor sensor) {
-            sensor.AddObservation(_droneManager.sensorsData.linearAccelX / 10f);
-            sensor.AddObservation(_droneManager.sensorsData.linearAccelY / 10f);
-            sensor.AddObservation(_droneManager.sensorsData.linearAccelZ / 10f);
+            sensor.AddObservation(_droneManager.sensorsData.linearAccelX);
+            sensor.AddObservation(_droneManager.sensorsData.linearAccelY);
+            sensor.AddObservation(_droneManager.sensorsData.linearAccelZ);
             
             // Raycast observations 
             for (int i = 0; i < 2; i++) {
@@ -145,8 +145,6 @@ namespace MLAgent.Car {
         private IEnumerator CheckLastPosition() {
             while (true) {
                 lastPosition = transform.position;
-                Vector3 lastForward = transform.forward;
-
                 yield return new WaitForSeconds(0.5f);
 
                 // skip this cycle completely if the episode just ended
@@ -157,7 +155,6 @@ namespace MLAgent.Car {
 
                 float yawRate = Mathf.Abs(rb.angularVelocity.y);
                 float distancedMoved = Vector3.Distance(lastPosition, transform.position);
-                // float angle = Vector3.SignedAngle(lastForward, transform.forward, Vector3.up);
 
                 AddReward(distancedMoved * 0.5f);
 
@@ -165,11 +162,6 @@ namespace MLAgent.Car {
                     AddReward(-1f * distancedMoved);
                     EndEpisode();
                 }
-
-                // if (Mathf.Abs(angle) > 50) {
-                //     AddReward(-1f * distancedMoved);
-                //     EndEpisode();
-                // }
             }
         }
     }
